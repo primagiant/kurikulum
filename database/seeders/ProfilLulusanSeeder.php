@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ProfilLulusan;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,6 @@ class ProfilLulusanSeeder extends Seeder
      */
     public function run()
     {
-        //
+        ProfilLulusan::factory()->count(10)->create();
     }
 }

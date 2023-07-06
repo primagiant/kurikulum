@@ -24,4 +24,9 @@ class CPL extends Model
     {
         return $this->belongsTo(Prodi::class, 'id_prodi', 'id_prodi');
     }
+
+    public function profilLulusan()
+    {
+        return $this->belongsToMany(ProfilLulusan::class);
+    }
 }

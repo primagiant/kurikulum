@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\CPL;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class CPLSeeder extends Seeder
 {
@@ -14,6 +15,6 @@ class CPLSeeder extends Seeder
      */
     public function run()
     {
-        //
+        CPL::factory()->count(15)->create();
     }
 }

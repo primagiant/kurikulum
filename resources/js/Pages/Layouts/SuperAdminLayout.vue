@@ -103,38 +103,6 @@ const sidebarItems = ref([
             includeChild: false,
         },
         {
-            title: "Feature",
-            link: route("dashboard"),
-            icon: "fa-list",
-            includeChild: true,
-            child: [
-                {
-                    title: "Profil Lulusan",
-                    link: route("dashboard"),
-                },
-                {
-                    title: "Capaian Profil Lulusan",
-                    link: route("dashboard"),
-                },
-                {
-                    title: "Bahan Kajian",
-                    link: route("dashboard"),
-                },
-                {
-                    title: "Mata Kuliah",
-                    link: route("dashboard"),
-                },
-                {
-                    title: "CPMK",
-                    link: route("dashboard"),
-                },
-                {
-                    title: "Sub-CPMK",
-                    link: route("dashboard"),
-                },
-            ],
-        },
-        {
             title: "Account",
             icon: "fa-user-alt",
             includeChild: true,
@@ -146,34 +114,6 @@ const sidebarItems = ref([
                 {
                     title: "Role",
                     link: route("role.index"),
-                },
-            ],
-        },
-        {
-            title: "Mapping Feature",
-            link: route("dashboard"),
-            icon: "fa-list",
-            includeChild: true,
-            child: [
-                {
-                    title: "CPL - PL",
-                    link: route("map.cpl.pl"),
-                },
-                {
-                    title: "BK - CPL",
-                    link: route("map.bk.cpl"),
-                },
-                {
-                    title: "BK - MK",
-                    link: route("map.bk.mk"),
-                },
-                {
-                    title: "CPL - MK",
-                    link: route("map.cpl.mk"),
-                },
-                {
-                    title: "3 Dimensi",
-                    link: route("dashboard"),
                 },
             ],
         },

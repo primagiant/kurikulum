@@ -19,8 +19,15 @@ class ProfilLulusan extends Model
         'active'
     ];
 
+    public $timestamps = false;
+
     public function prodi()
     {
         return $this->belongsTo(Prodi::class, 'id_prodi', 'id_prodi');
+    }
+
+    public function cpl()
+    {
+        return $this->belongsToMany(CPL::class);
     }
 }
