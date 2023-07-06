@@ -30,6 +30,13 @@ Route::middleware('auth')->group(function () {
 
 // Koor Prodi (Main Feature is Here)
 Route::middleware('auth', 'check.roles:koor_prodi')->group(function () {
+    // Maping 2D
+    Route::get('/cpl_pl', [MapController::class, 'cplToPl'])->name('map.cpl.pl');
+    Route::post('/cpl_pl', [MapController::class, 'mapingCplToPl'])->name('maping.cpl.pl');
+
+    Route::get('/bk-cpl', [MapController::class, 'bkToCpl'])->name('map.bk.cpl');
+    Route::get('/bk-mk', [MapController::class, 'bkToMk'])->name('map.bk.mk');
+    Route::get('/cpl_mk', [MapController::class, 'cplToMk'])->name('map.cpl.mk');
 });
 
 // Superadmin (crud only)
@@ -49,10 +56,4 @@ Route::middleware('auth', 'check.roles:super_admin')->group(function () {
     Route::get('/role/{id}/edit', [RoleController::class, 'edit'])->name('role.edit');
     Route::post('/role/{id}/edit', [RoleController::class, 'update'])->name('role.update');
     Route::delete('/role/{id}', [RoleController::class, 'destroy'])->name('role.destroy');
-
-    // Must be in KoorProdi
-    Route::get('/cpl_pl', [MapController::class, 'cplToPl'])->name('map.cpl.pl');
-    Route::get('/bk-cpl', [MapController::class, 'bkToCpl'])->name('map.bk.cpl');
-    Route::get('/bk-mk', [MapController::class, 'bkToMk'])->name('map.bk.mk');
-    Route::get('/cpl_mk', [MapController::class, 'cplToMk'])->name('map.cpl.mk');
 });

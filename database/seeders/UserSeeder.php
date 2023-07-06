@@ -30,6 +30,7 @@ class UserSeeder extends Seeder
             'name' => "Koor Prodi Ilmu Komputer",
             'email' => 'ilkom@sistem.com',
             'email_verified_at' => now(),
+            'prodi' => 1,
             'password' => bcrypt('password')
         ]);
 

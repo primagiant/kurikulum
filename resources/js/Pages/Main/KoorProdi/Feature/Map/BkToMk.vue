@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import Layout from '@/Pages/Layouts/SuperAdminLayout.vue'
+import Layout from '@/Pages/Layouts/KoorProdiLayout.vue'
 export default {
     layout: Layout
 }
