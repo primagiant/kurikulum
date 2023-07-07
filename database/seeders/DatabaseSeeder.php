@@ -20,8 +20,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CPLSeeder::class,
             ProfilLulusanSeeder::class,
+            BahanKajianSeeder::class,
+            MataKuliahSeeder::class,
         ]);
-
-        // \App\Models\Role::factory()->hasUsers()->create();
     }
 }

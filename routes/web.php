@@ -39,9 +39,17 @@ Route::middleware('auth', 'check.roles:koor_prodi')->group(function () {
     Route::get('/cpl_pl', [MapController::class, 'cplToPl'])->name('map.cpl.pl');
     Route::post('/cpl_pl', [MapController::class, 'mapingCplToPl'])->name('maping.cpl.pl');
 
-    Route::get('/bk-cpl', [MapController::class, 'bkToCpl'])->name('map.bk.cpl');
-    Route::get('/bk-mk', [MapController::class, 'bkToMk'])->name('map.bk.mk');
+    Route::get('/bk_cpl', [MapController::class, 'bkToCpl'])->name('map.bk.cpl');
+    Route::post('/bk_cpl', [MapController::class, 'mapingBkToCpl'])->name('maping.bk.cpl');
+
+    Route::get('/bk_mk', [MapController::class, 'bkToMk'])->name('map.bk.mk');
+    Route::post('/bk_mk', [MapController::class, 'mapingBkToMk'])->name('maping.bk.mk');
+
     Route::get('/cpl_mk', [MapController::class, 'cplToMk'])->name('map.cpl.mk');
+    Route::post('/cpl_mk', [MapController::class, 'mapingCplToMk'])->name('maping.cpl.mk');
+
+    // Show 3D
+
 
     //ProfilLulusan
     Route::get('/profil-lulusan', [ProfilLulusanController::class, 'index'])->name('profil.lulusan.index');
