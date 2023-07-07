@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CPLController;
 use App\Http\Controllers\MapController;
+use App\Http\Controllers\CPMKController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
@@ -73,6 +74,14 @@ Route::middleware('auth', 'check.roles:koor_prodi')->group(function () {
     Route::get('/mata-kuliah/{id}/edit', [MataKuliahController::class, 'edit'])->name('mk.edit');
     Route::post('/mata-kuliah/{id}/edit', [MataKuliahController::class, 'update'])->name('mk.update');
     Route::delete('/mata-kuliah/{id}', [MataKuliahController::class, 'destroy'])->name('mk.destroy');
+
+    //CPMK
+    Route::get('/cpmk', [CPMKController::class, 'index'])->name('cpmk.index');
+    Route::get('/cpmk/create', [CPMKController::class, 'create'])->name('cpmk.create');
+    Route::post('/cpmk/create', [CPMKController::class, 'store'])->name('cpmk.store');
+    Route::get('/cpmk/{id}/edit', [CPMKController::class, 'edit'])->name('cpmk.edit');
+    Route::post('/cpmk/{id}/edit', [CPMKController::class, 'update'])->name('cpmk.update');
+    Route::delete('/cpmk/{id}', [CPMKController::class, 'destroy'])->name('cpmk.destroy');
 });
 
 // Superadmin (crud only)

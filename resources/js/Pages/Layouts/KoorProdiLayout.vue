@@ -126,7 +126,7 @@ const sidebarItems = ref([
                 },
                 {
                     title: "CPMK",
-                    link: route("dashboard"),
+                    link: route("cpmk.index"),
                 },
                 {
                     title: "Sub-CPMK",

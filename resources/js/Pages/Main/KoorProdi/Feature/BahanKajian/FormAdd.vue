@@ -14,18 +14,18 @@
                 class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden p-4">
                 <div class="flex flex-col md:flex-row justify-between gap-4 mb-6 ">
                     <div class="w-2/5">
-                        <label for="default-kode-pl"
+                        <label for="default-kode-bk"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode
                             Bahan Kajian</label>
-                        <input type="text" id="default-kode-pl" v-model="form.kode_bk"
+                        <input type="text" id="default-kode-bk" v-model="form.kode_bk"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Maximum 4 characters">
                     </div>
                     <div class="w-full mb-2 md:mb-0">
-                        <label for="default-kode-pl"
+                        <label for="default-nama-bk"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
                             Bahan Kajian</label>
-                        <input type="text" id="default-kode-pl" v-model="form.nama_bk"
+                        <input type="text" id="default-nama-bk" v-model="form.nama_bk"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Example Bahan Kajian">
                     </div>
@@ -39,15 +39,17 @@
 
                 </div>
                 <div class="mb-6 w-full">
-                    <label for="default-kode-pl" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Bobot
+                    <label for="default-bobot-min"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Bobot
                         Minimal</label>
-                    <input type="number" id="default-kode-pl" v-model="form.bobot_min"
+                    <input type="number" id="default-bobot-min" v-model="form.bobot_min"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block lg:w-[150px] w-1/4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
                 <div class="mb-6 w-full">
-                    <label for="default-kode-pl" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Bobot
+                    <label for="default-bobot-max"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Bobot
                         Maksimal</label>
-                    <input type="number" id="default-kode-pl" v-model="form.bobot_max"
+                    <input type="number" id="default-bobot-max" v-model="form.bobot_max"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block lg:w-[150px] w-1/4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
                 <div>
