@@ -17,7 +17,11 @@ class SubCpmkFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'id_prodi' => 1,
+            'id_map_cpmk_mk' => 1,
+            'kode_sub_cpmk' => "Sub-CPMKXXYZ",
+            'deskripsi_sub_cpmk' => fake()->text(),
+            'active' => 1
         ];
     }
 }

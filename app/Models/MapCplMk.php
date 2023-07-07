@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MapCplBk extends Model
+class MapCplMk extends Model
 {
     use HasFactory;
-    protected $table = 'map_cpl_bk';
+    protected $table = 'map_cpl_mk';
     protected $primaryKey = 'id_map_cpl_bk';
     protected $fillable = [
         'id_cpl',
-        'id_bk',
+        'id_mk',
         'active'
     ];
     public $timestamps = false;
@@ -22,13 +22,8 @@ class MapCplBk extends Model
         return $this->belongsTo(CPL::class, 'id_cpl', 'id_cpl');
     }
 
-    public function bahanKajian()
-    {
-        return $this->belongsTo(BahanKajian::class, 'id_bk', 'id_bk');
-    }
-
     public function mataKuliah()
     {
-        return $this->hasOneThrough(MataKuliah::class, BahanKajian::class, 'id_bk', 'id_mk', 'id_bk', 'id_mk');
+        return $this->belongsTo(MataKuliah::class, 'id_mk', 'id_mk');
     }
 }

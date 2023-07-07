@@ -17,7 +17,11 @@ class CPMKFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'id_prodi' => 1,
+            'id_cpl' => 1,
+            'kode_cpmk' => "CPMLXXY",
+            'deskripsi_cpmk' => fake()->text(),
+            'active' => 1,
         ];
     }
 }
