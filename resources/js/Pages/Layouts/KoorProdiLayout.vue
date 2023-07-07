@@ -122,7 +122,7 @@ const sidebarItems = ref([
                 },
                 {
                     title: "Mata Kuliah",
-                    link: route("dashboard"),
+                    link: route("mk.index"),
                 },
                 {
                     title: "CPMK",

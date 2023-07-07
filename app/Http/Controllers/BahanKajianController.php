@@ -42,7 +42,7 @@ class BahanKajianController extends Controller
         ]);
 
         // Save
-        $cpl = BahanKajian::create([
+        $bahan_kajian = BahanKajian::create([
             'id_prodi' => $user->prodi,
             'kode_bk' => $request->input('kode_bk'),
             'nama_bk' => $request->input('nama_bk'),

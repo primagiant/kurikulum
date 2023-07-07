@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\BahanKajianController;
 use App\Http\Controllers\ProfilLulusanController;
 
@@ -64,6 +65,14 @@ Route::middleware('auth', 'check.roles:koor_prodi')->group(function () {
     Route::get('/bahan-kajian/{id}/edit', [BahanKajianController::class, 'edit'])->name('bahan.kajian.edit');
     Route::post('/bahan-kajian/{id}/edit', [BahanKajianController::class, 'update'])->name('bahan.kajian.update');
     Route::delete('/bahan-kajian/{id}', [BahanKajianController::class, 'destroy'])->name('bahan.kajian.destroy');
+
+    //MataKuliah
+    Route::get('/mata-kuliah', [MataKuliahController::class, 'index'])->name('mk.index');
+    Route::get('/mata-kuliah/create', [MataKuliahController::class, 'create'])->name('mk.create');
+    Route::post('/mata-kuliah/create', [MataKuliahController::class, 'store'])->name('mk.store');
+    Route::get('/mata-kuliah/{id}/edit', [MataKuliahController::class, 'edit'])->name('mk.edit');
+    Route::post('/mata-kuliah/{id}/edit', [MataKuliahController::class, 'update'])->name('mk.update');
+    Route::delete('/mata-kuliah/{id}', [MataKuliahController::class, 'destroy'])->name('mk.destroy');
 });
 
 // Superadmin (crud only)
