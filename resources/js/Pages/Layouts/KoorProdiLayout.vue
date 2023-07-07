@@ -118,15 +118,15 @@ const sidebarItems = ref([
                 },
                 {
                     title: "Bahan Kajian",
-                    link: route("dashboard"),
+                    link: route("bahan.kajian.index"),
                 },
                 {
                     title: "Mata Kuliah",
-                    link: route("dashboard"),
+                    link: route("mk.index"),
                 },
                 {
                     title: "CPMK",
-                    link: route("dashboard"),
+                    link: route("cpmk.index"),
                 },
                 {
                     title: "Sub-CPMK",

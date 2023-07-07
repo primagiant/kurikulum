@@ -3,10 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CPLController;
 use App\Http\Controllers\MapController;
+use App\Http\Controllers\CPMKController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\MataKuliahController;
+use App\Http\Controllers\BahanKajianController;
 use App\Http\Controllers\ProfilLulusanController;
 
 /*
@@ -43,12 +46,10 @@ Route::middleware('auth', 'check.roles:koor_prodi')->group(function () {
     Route::post('/bk_mk', [MapController::class, 'mapingBkToMk'])->name('maping.bk.mk');
 
     Route::get('/cpl_mk', [MapController::class, 'cplToMk'])->name('map.cpl.mk');
-<<<<<<< HEAD
     Route::post('/cpl_mk', [MapController::class, 'mapingCplToMk'])->name('maping.cpl.mk');
 
     // Show 3D
 
-=======
 
     //ProfilLulusan
     Route::get('/profil-lulusan', [ProfilLulusanController::class, 'index'])->name('profil.lulusan.index');
@@ -65,7 +66,30 @@ Route::middleware('auth', 'check.roles:koor_prodi')->group(function () {
     Route::get('/capaian-profil-lulusan/{id}/edit', [CPLController::class, 'edit'])->name('cpl.edit');
     Route::post('/capaian-profil-lulusan/{id}/edit', [CPLController::class, 'update'])->name('cpl.update');
     Route::delete('/capaian-profil-lulusan/{id}', [CPLController::class, 'destroy'])->name('cpl.destroy');
->>>>>>> b450d1a40d6ab3ceddfc1d68ae059b7b410cef93
+
+    //BahanKajian
+    Route::get('/bahan-kajian', [BahanKajianController::class, 'index'])->name('bahan.kajian.index');
+    Route::get('/bahan-kajian/create', [BahanKajianController::class, 'create'])->name('bahan.kajian.create');
+    Route::post('/bahan-kajian/create', [BahanKajianController::class, 'store'])->name('bahan.kajian.store');
+    Route::get('/bahan-kajian/{id}/edit', [BahanKajianController::class, 'edit'])->name('bahan.kajian.edit');
+    Route::post('/bahan-kajian/{id}/edit', [BahanKajianController::class, 'update'])->name('bahan.kajian.update');
+    Route::delete('/bahan-kajian/{id}', [BahanKajianController::class, 'destroy'])->name('bahan.kajian.destroy');
+
+    //MataKuliah
+    Route::get('/mata-kuliah', [MataKuliahController::class, 'index'])->name('mk.index');
+    Route::get('/mata-kuliah/create', [MataKuliahController::class, 'create'])->name('mk.create');
+    Route::post('/mata-kuliah/create', [MataKuliahController::class, 'store'])->name('mk.store');
+    Route::get('/mata-kuliah/{id}/edit', [MataKuliahController::class, 'edit'])->name('mk.edit');
+    Route::post('/mata-kuliah/{id}/edit', [MataKuliahController::class, 'update'])->name('mk.update');
+    Route::delete('/mata-kuliah/{id}', [MataKuliahController::class, 'destroy'])->name('mk.destroy');
+
+    //CPMK
+    Route::get('/cpmk', [CPMKController::class, 'index'])->name('cpmk.index');
+    Route::get('/cpmk/create', [CPMKController::class, 'create'])->name('cpmk.create');
+    Route::post('/cpmk/create', [CPMKController::class, 'store'])->name('cpmk.store');
+    Route::get('/cpmk/{id}/edit', [CPMKController::class, 'edit'])->name('cpmk.edit');
+    Route::post('/cpmk/{id}/edit', [CPMKController::class, 'update'])->name('cpmk.update');
+    Route::delete('/cpmk/{id}', [CPMKController::class, 'destroy'])->name('cpmk.destroy');
 });
 
 // Superadmin (crud only)
