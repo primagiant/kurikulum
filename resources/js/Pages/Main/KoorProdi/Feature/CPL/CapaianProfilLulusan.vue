@@ -76,7 +76,7 @@
                                             </li>
                                         </ul>
                                         <div class="py-1">
-                                            <a href="#" @click="deleteUser(capaian.id_cpl)"
+                                            <a href="#" @click="deleteCpl(capaian.id_cpl)"
                                                 class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
                                                 Delete
                                             </a>
@@ -136,8 +136,8 @@ watch(search, (value) => {
     )
 })
 
-// For Delete User
-const deleteUser = (id) => {
+// For Delete
+const deleteCpl = (id) => {
     Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
