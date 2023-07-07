@@ -43,12 +43,10 @@ Route::middleware('auth', 'check.roles:koor_prodi')->group(function () {
     Route::post('/bk_mk', [MapController::class, 'mapingBkToMk'])->name('maping.bk.mk');
 
     Route::get('/cpl_mk', [MapController::class, 'cplToMk'])->name('map.cpl.mk');
-<<<<<<< HEAD
     Route::post('/cpl_mk', [MapController::class, 'mapingCplToMk'])->name('maping.cpl.mk');
 
     // Show 3D
 
-=======
 
     //ProfilLulusan
     Route::get('/profil-lulusan', [ProfilLulusanController::class, 'index'])->name('profil.lulusan.index');
@@ -65,7 +63,6 @@ Route::middleware('auth', 'check.roles:koor_prodi')->group(function () {
     Route::get('/capaian-profil-lulusan/{id}/edit', [CPLController::class, 'edit'])->name('cpl.edit');
     Route::post('/capaian-profil-lulusan/{id}/edit', [CPLController::class, 'update'])->name('cpl.update');
     Route::delete('/capaian-profil-lulusan/{id}', [CPLController::class, 'destroy'])->name('cpl.destroy');
->>>>>>> b450d1a40d6ab3ceddfc1d68ae059b7b410cef93
 });
 
 // Superadmin (crud only)
