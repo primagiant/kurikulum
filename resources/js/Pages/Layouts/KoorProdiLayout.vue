@@ -110,11 +110,11 @@ const sidebarItems = ref([
             child: [
                 {
                     title: "Profil Lulusan",
-                    link: route("dashboard"),
+                    link: route("profil.lulusan.index"),
                 },
                 {
                     title: "Capaian Profil Lulusan",
-                    link: route("dashboard"),
+                    link: route("cpl.index"),
                 },
                 {
                     title: "Bahan Kajian",
