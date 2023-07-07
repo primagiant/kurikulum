@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\BahanKajianController;
 use App\Http\Controllers\ProfilLulusanController;
 
 /*
@@ -55,6 +56,14 @@ Route::middleware('auth', 'check.roles:koor_prodi')->group(function () {
     Route::get('/capaian-profil-lulusan/{id}/edit', [CPLController::class, 'edit'])->name('cpl.edit');
     Route::post('/capaian-profil-lulusan/{id}/edit', [CPLController::class, 'update'])->name('cpl.update');
     Route::delete('/capaian-profil-lulusan/{id}', [CPLController::class, 'destroy'])->name('cpl.destroy');
+
+    //BahanKajian
+    Route::get('/bahan-kajian', [BahanKajianController::class, 'index'])->name('bahan.kajian.index');
+    Route::get('/bahan-kajian/create', [BahanKajianController::class, 'create'])->name('bahan.kajian.create');
+    Route::post('/bahan-kajian/create', [BahanKajianController::class, 'store'])->name('bahan.kajian.store');
+    Route::get('/bahan-kajian/{id}/edit', [BahanKajianController::class, 'edit'])->name('bahan.kajian.edit');
+    Route::post('/bahan-kajian/{id}/edit', [BahanKajianController::class, 'update'])->name('bahan.kajian.update');
+    Route::delete('/bahan-kajian/{id}', [BahanKajianController::class, 'destroy'])->name('bahan.kajian.destroy');
 });
 
 // Superadmin (crud only)

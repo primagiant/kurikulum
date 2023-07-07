@@ -118,7 +118,7 @@ const sidebarItems = ref([
                 },
                 {
                     title: "Bahan Kajian",
-                    link: route("dashboard"),
+                    link: route("bahan.kajian.index"),
                 },
                 {
                     title: "Mata Kuliah",
