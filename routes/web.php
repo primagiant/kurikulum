@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\DashboardController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CPLController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ProfilLulusanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,10 +43,29 @@ Route::middleware('auth', 'check.roles:koor_prodi')->group(function () {
     Route::post('/bk_mk', [MapController::class, 'mapingBkToMk'])->name('maping.bk.mk');
 
     Route::get('/cpl_mk', [MapController::class, 'cplToMk'])->name('map.cpl.mk');
+<<<<<<< HEAD
     Route::post('/cpl_mk', [MapController::class, 'mapingCplToMk'])->name('maping.cpl.mk');
 
     // Show 3D
 
+=======
+
+    //ProfilLulusan
+    Route::get('/profil-lulusan', [ProfilLulusanController::class, 'index'])->name('profil.lulusan.index');
+    Route::get('/profil-lulusan/create', [ProfilLulusanController::class, 'create'])->name('profil.lulusan.create');
+    Route::post('/profil-lulusan/create', [ProfilLulusanController::class, 'store'])->name('profil.lulusan.store');
+    Route::get('/profil-lulusan/{id}/edit', [ProfilLulusanController::class, 'edit'])->name('profil.lulusan.edit');
+    Route::post('/profil-lulusan/{id}/edit', [ProfilLulusanController::class, 'update'])->name('profil.lulusan.update');
+    Route::delete('/profil-lulusan/{id}', [ProfilLulusanController::class, 'destroy'])->name('profil.lulusan.destroy');
+
+    //CapaianProfilLulusan
+    Route::get('/capaian-profil-lulusan', [CPLController::class, 'index'])->name('cpl.index');
+    Route::get('/capaian-profil-lulusan/create', [CPLController::class, 'create'])->name('cpl.create');
+    Route::post('/capaian-profil-lulusan/create', [CPLController::class, 'store'])->name('cpl.store');
+    Route::get('/capaian-profil-lulusan/{id}/edit', [CPLController::class, 'edit'])->name('cpl.edit');
+    Route::post('/capaian-profil-lulusan/{id}/edit', [CPLController::class, 'update'])->name('cpl.update');
+    Route::delete('/capaian-profil-lulusan/{id}', [CPLController::class, 'destroy'])->name('cpl.destroy');
+>>>>>>> b450d1a40d6ab3ceddfc1d68ae059b7b410cef93
 });
 
 // Superadmin (crud only)
