@@ -3,10 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CPLController;
 use App\Http\Controllers\MapController;
+use App\Http\Controllers\CPMKController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\MataKuliahController;
+use App\Http\Controllers\BahanKajianController;
 use App\Http\Controllers\ProfilLulusanController;
 
 /*

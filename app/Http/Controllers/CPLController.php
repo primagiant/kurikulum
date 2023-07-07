@@ -63,4 +63,23 @@ class CPLController extends Controller
             'cpl' => CPL::select('id_cpl', 'kode_cpl', 'deskripsi_cpl', 'unsur', 'referensi')->find($id),
         ]);
     }
+
+    public function destroy($id)
+    {
+        try {
+            // Check If data exist
+            $cpl = CPL::findOrFail($id);
+
+            // Delete
+            $cpl->delete();
+
+            // Redirect
+            return to_route('cpl.index')->with("msg", [
+                "type" => "success", // success | error | warning | info | question
+                "text" => "Deleted Success"
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
 }
