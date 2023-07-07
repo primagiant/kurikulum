@@ -3,7 +3,7 @@
     <div>
         <Breadcrumb :items="breadcrumbItems" />
         <div class="p-6">
-            <h1 class="mb-5">User List</h1>
+            <h1 class="mb-5">Maping Capaian Pembelajaran Lulusan - Profil Lulusan</h1>
             <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
                 <div class="overflow-x-auto pb-4">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -75,9 +75,8 @@ const baseUrl = GlobalVariable.base_url
 
 // Breadcrumb
 const breadcrumbItems = ref([
-    { name: "Account" },
-    { name: "User" },
-    { name: "List", link: route('user.index') },
+    { name: "Maping" },
+    { name: "Capaian Pembelajaran Lulusan - Profil Lulusan", link: route('map.cpl.pl') },
 ])
 
 // Property
@@ -109,7 +108,7 @@ const selectRelation = (id_cpl, id_pl) => {
     router.post(`${baseUrl}/cpl_pl`, {
         id_cpl,
         id_pl
-    })
+    }, { preserveScroll: true })
 }
 
 </script>

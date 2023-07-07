@@ -1,112 +1,110 @@
 <template>
-    <Head title="User" />
+    <Head title="Capain Pembeljaran Lulusan - Mata Kuliah" />
     <div>
         <Breadcrumb :items="breadcrumbItems" />
         <div class="p-6">
-            <h1 class="mb-5">User List</h1>
-            <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+            <h1 class="mb-5">Maping Capain Pembeljaran Lulusan - Mata Kuliah</h1>
+            <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 mb-4">
+                        <thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" rowspan="2" class="px-4 py-3 text-center">Kode CPL</th>
-                                <th scope="col" colspan="100%" class="px-4 py-3 text-center">MK (Mata Kuliah)</th>
+                                <th scope="col" rowspan="2" class="px-4 py-3 text-center">Kode MK</th>
+                                <th scope="col" rowspan="2" class="px-4 py-3 text-center">Nama Mata Kuliah</th>
+                                <th scope="col" colspan="100%" class="px-4 py-3 text-center">CPl (Capain Pembeljaran
+                                    Lulusan)
+                                </th>
                             </tr>
                             <tr>
-                                <th v-for="index in 10" scope="col" class="px-4 py-3 text-center">MK{{ index }}</th>
+                                <th v-for="cpl_item in cpl" :data-popover-target="`popover-cpl-${cpl_item.id_cpl}`"
+                                    data-popover-placement="bottom" scope="col" class="px-4 py-3 text-center cursor-help">
+                                    {{ cpl_item.kode_cpl }}
+                                    <div data-popover :id="`popover-cpl-${cpl_item.id_cpl}`" role="tooltip"
+                                        class="absolute z-10 font-light invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
+                                        <div class="px-3 py-2">
+                                            <p>{{ cpl_item.deskripsi_cpl }}</p>
+                                        </div>
+                                        <div data-popper-arrow></div>
+                                    </div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="i in 10" class="border-b dark:border-gray-700">
-                                <td class="px-4 py-3 text-center">CPL{{ i }}</td>
-                                <td v-for="j in 10" class="px-4 py-3 text-center">
-                                    <input type="checkbox" name="" value="">
+                            <tr v-for="mk_item, idy in mk" class="border-b dark:border-gray-700">
+                                <td class="px-4 py-3 text-center">
+                                    {{ mk_item.kode_mk_obe }}
+                                </td>
+                                <td class="px-4 py-3 text-left">
+                                    {{ mk_item.nama_mk }}
+                                </td>
+                                <td v-for="cpl_item, idx in cpl" class="px-4 py-3 text-center">
+                                    <input @change="selectRelation(mk_item.id_mk, cpl_item.id_cpl)" type="checkbox"
+                                        :checked="dataActive[idy][idx]">
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
-                    aria-label="Table navigation">
-                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                        Showing
-                        <span class="font-semibold text-gray-900 dark:text-white">1-10</span>
-                        of
-                        <span class="font-semibold text-gray-900 dark:text-white">1000</span>
-                    </span>
-                    <ul class="inline-flex items-stretch -space-x-px">
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                <span class="sr-only">Previous</span>
-                                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                        </li>
-                        <li>
-                            <a href="#" aria-current="page"
-                                class="flex items-center justify-center text-sm z-10 py-2 px-3 leading-tight text-primary-600 bg-primary-50 border border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                <span class="sr-only">Next</span>
-                                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import Layout from '@/Pages/Layouts/SuperAdminLayout.vue'
+import Layout from '@/Pages/Layouts/KoorProdiLayout.vue'
 export default {
     layout: Layout
 }
 </script>
 
 <script setup>
-import { ref } from 'vue'
+// Library
+import { ref, onBeforeMount, onMounted } from 'vue'
+import { router } from '@inertiajs/vue3'
+
+// Import Components
 import Breadcrumb from '@/Pages/Components/Breadcrumbs/Breadcrumb.vue'
 
+// BaseUrl
+import GlobalVariable from '@/variable.js'
+const baseUrl = GlobalVariable.base_url
+
+// Breadcrumb
 const breadcrumbItems = ref([
-    {
-        name: "Account",
-    },
-    {
-        name: "User",
-    },
-    {
-        name: "List",
-        link: route('user.index')
-    },
+    { name: "Maping" },
+    { name: "Bahan Kajian - Mata Kuliah", link: route('map.bk.mk') },
 ])
+
+// Property
+const props = defineProps({
+    mk: Array,
+    cpl: Array,
+    maping: Array,
+})
+
+// Make active state for the checkbox
+const dataActive = ref([])
+onBeforeMount(() => {
+    props.mk.forEach((mk_item) => {
+        const row = []
+        props.cpl.forEach((cpl_item) => {
+            let exists = props.maping.some(item => item.id_cpl === cpl_item.id_cpl && item.id_mk === mk_item.id_mk)
+            if (exists) {
+                row.push(1)
+            } else {
+                row.push(0)
+            }
+        })
+        dataActive.value.push(row)
+    })
+})
+
+// Make relation
+const selectRelation = (id_mk, id_cpl) => {
+    router.post(`${baseUrl}/cpl_mk`, {
+        id_cpl,
+        id_mk
+    }, { preserveScroll: true })
+}
+
 </script>

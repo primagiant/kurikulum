@@ -16,8 +16,18 @@ class MataKuliahFactory extends Factory
      */
     public function definition()
     {
+        $number = $this->faker->unique()->numberBetween(1, 99);
+        $kode_mk_obe = 'MK' . str_pad($number, 2, '0', STR_PAD_LEFT);
+        $kode_mk_undiksha = 'UNDIKSHA' . str_pad($number, 2, '0', STR_PAD_LEFT);
         return [
-            //
+            'id_prodi' => 1,
+            'kode_mk_obe' => $kode_mk_obe,
+            'kode_mk_undiksha' => $kode_mk_undiksha,
+            'nama_mk' => fake()->colorName(),
+            'deskripsi_mk' => fake()->text(),
+            'sks' => rand(1, 6),
+            'semester' => rand(1, 8),
+            'active' => 1
         ];
     }
 }
