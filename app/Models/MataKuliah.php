@@ -18,12 +18,18 @@ class MataKuliah extends Model
         'deskripsi_mk',
         'sks',
         'semester',
-        'active'
+        'id_kategori_mk',
+        'active',
     ];
     public $timestamps = false;
 
     public function prodi()
     {
         return $this->belongsTo(Prodi::class, 'id_prodi', 'id_prodi');
+    }
+
+    public function kategoriMataKuliah()
+    {
+        return $this->belongsTo(KategoriMatakuliah::class, 'id_kategori_mk', 'id_kategori_mk');
     }
 }

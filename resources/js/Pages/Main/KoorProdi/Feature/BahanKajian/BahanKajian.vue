@@ -1,6 +1,6 @@
 <template>
     <Head title="Bahan Kajian" />
-    <div>
+    <layout>
         <Breadcrumb :items="breadcrumbItems" />
         <div class="p-6">
             <h1 class="mb-5">Bahan Kajian List</h1>
@@ -56,9 +56,9 @@
                                 <td class="px-4 py-3">{{ bk.deskripsi_bk }}</td>
                                 <td class="px-4 py-3">{{ bk.bobot_min }}</td>
                                 <td class="px-4 py-3">{{ bk.bobot_max }}</td>
-                                <td class="px-4 py-3 flex items-center justify-end">
-                                    <button :id="bk.id_bk + '-dropdown-button'"
-                                        :data-dropdown-toggle="bk.id_bk + '-dropdown'"
+                                <td class="px-4 py-3 flex items-center justify-end gap-2">
+                                    <button :id="bk.bk_id + '-dropdown-button'"
+                                        :data-dropdown-toggle="bk.bk_id + '-dropdown'"
                                         class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
                                         type="button">
                                         <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
@@ -67,20 +67,20 @@
                                                 d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
                                         </svg>
                                     </button>
-                                    <div :id="bk.id_bk + '-dropdown'"
+                                    <div :id="bk.bk_id + '-dropdown'"
                                         class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
                                             aria-labelledby="apple-imac-27-dropdown-button">
                                             <li>
                                                 <Link :href="route('cpl.edit', bk.id_bk)"
-                                                    class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                    class="block py-2 px-4 hover:bg-gray-100">
                                                 Edit
                                                 </Link>
                                             </li>
                                         </ul>
-                                        <div class="py-1">
+                                        <div class="py-1 text-gray-700">
                                             <a href="#" @click="deleteBK(bk.id_bk)"
-                                                class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                                                class="block py-2 px-4 hover:bg-gray-100">
                                                 Delete
                                             </a>
                                         </div>
@@ -94,17 +94,11 @@
                     :total="bahan_kajian.total" />
             </div>
         </div>
-    </div>
+    </layout>
 </template>
-<script>
-// For Layout
-import Layout from '@/Pages/Layouts/KoorProdiLayout.vue'
-export default {
-    layout: Layout,
-}
-</script>
 <script setup>
 // Import Library
+import Layout from '@/Pages/Layouts/KoorProdiLayout.vue'
 import { ref, watch, onMounted } from 'vue'
 import { router } from '@inertiajs/vue3'
 import Swal from 'sweetalert2'

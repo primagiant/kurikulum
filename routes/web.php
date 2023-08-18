@@ -6,10 +6,12 @@ use App\Http\Controllers\MapController;
 use App\Http\Controllers\CPMKController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SubCPMKController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\BahanKajianController;
+use App\Http\Controllers\PengampuanController;
 use App\Http\Controllers\ProfilLulusanController;
 
 /*
@@ -66,6 +68,26 @@ Route::middleware('auth', 'check.roles:koor_prodi')->group(function () {
     Route::get('/capaian-profil-lulusan/{id}/edit', [CPLController::class, 'edit'])->name('cpl.edit');
     Route::post('/capaian-profil-lulusan/{id}/edit', [CPLController::class, 'update'])->name('cpl.update');
     Route::delete('/capaian-profil-lulusan/{id}', [CPLController::class, 'destroy'])->name('cpl.destroy');
+
+    //BahanKajian
+    Route::get('/bahan-kajian', [BahanKajianController::class, 'index'])->name('bahan.kajian.index');
+    Route::get('/bahan-kajian/create', [BahanKajianController::class, 'create'])->name('bahan.kajian.create');
+    Route::post('/bahan-kajian/create', [BahanKajianController::class, 'store'])->name('bahan.kajian.store');
+    Route::get('/bahan-kajian/{id}/edit', [BahanKajianController::class, 'edit'])->name('bahan.kajian.edit');
+    Route::post('/bahan-kajian/{id}/edit', [BahanKajianController::class, 'update'])->name('bahan.kajian.update');
+    Route::delete('/bahan-kajian/{id}', [BahanKajianController::class, 'destroy'])->name('bahan.kajian.destroy');
+
+    //MataKuliah
+    Route::get('/mata-kuliah', [MataKuliahController::class, 'index'])->name('mk.index');
+    Route::get('/mata-kuliah/create', [MataKuliahController::class, 'create'])->name('mk.create');
+    Route::post('/mata-kuliah/create', [MataKuliahController::class, 'store'])->name('mk.store');
+    Route::get('/mata-kuliah/{id}/edit', [MataKuliahController::class, 'edit'])->name('mk.edit');
+    Route::post('/mata-kuliah/{id}/edit', [MataKuliahController::class, 'update'])->name('mk.update');
+    Route::delete('/mata-kuliah/{id}', [MataKuliahController::class, 'destroy'])->name('mk.destroy');
+
+    // Pengampuan
+    Route::get('/pengampuan', [PengampuanController::class, 'index'])->name('pengampuan.index');
+    Route::post('/pengampuan', [PengampuanController::class, 'index'])->name('pengampuan.store');
 });
 
 // Superadmin (crud only)
@@ -85,4 +107,23 @@ Route::middleware('auth', 'check.roles:super_admin')->group(function () {
     Route::get('/role/{id}/edit', [RoleController::class, 'edit'])->name('role.edit');
     Route::post('/role/{id}/edit', [RoleController::class, 'update'])->name('role.update');
     Route::delete('/role/{id}', [RoleController::class, 'destroy'])->name('role.destroy');
+});
+
+// Dosen
+Route::middleware('auth', 'check.roles:super_admin')->group(function () {
+    //CPMK
+    Route::get('/cpmk', [CPMKController::class, 'index'])->name('cpmk.index');
+    Route::get('/cpmk/create', [CPMKController::class, 'create'])->name('cpmk.create');
+    Route::post('/cpmk/create', [CPMKController::class, 'store'])->name('cpmk.store');
+    Route::get('/cpmk/{id}/edit', [CPMKController::class, 'edit'])->name('cpmk.edit');
+    Route::post('/cpmk/{id}/edit', [CPMKController::class, 'update'])->name('cpmk.update');
+    Route::delete('/cpmk/{id}', [CPMKController::class, 'destroy'])->name('cpmk.destroy');
+
+    //Sub-CPMK
+    Route::get('/sub-cpmk', [SubCPMKController::class, 'index'])->name('subcpmk.index');
+    Route::get('/sub-cpmk/create', [SubCPMKController::class, 'create'])->name('subcpmk.create');
+    Route::post('/sub-cpmk/create', [SubCPMKController::class, 'store'])->name('subcpmk.store');
+    Route::get('/sub-cpmk/{id}/edit', [SubCPMKController::class, 'edit'])->name('subcpmk.edit');
+    Route::post('/sub-cpmk/{id}/edit', [SubCPMKController::class, 'update'])->name('subcpmk.update');
+    Route::delete('/sub-cpmk/{id}', [SubCPMKController::class, 'destroy'])->name('subcpmk.destroy');
 });

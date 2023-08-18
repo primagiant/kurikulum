@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MataKuliah;
 use Inertia\Inertia;
+use App\Models\MataKuliah;
 use Illuminate\Http\Request;
+use App\Models\KategoriMatakuliah;
+use Illuminate\Support\Facades\DB;
 
 class MatakuliahController extends Controller
 {
@@ -28,7 +30,9 @@ class MatakuliahController extends Controller
 
     public function create()
     {
-        return Inertia::render('Main/KoorProdi/Feature/MataKuliah/FormAdd');
+        return Inertia::render('Main/KoorProdi/Feature/MataKuliah/FormAdd', [
+            'kategori_mk_list' => KategoriMatakuliah::all()
+        ]);
     }
 
     public function store(Request $request)
@@ -37,12 +41,13 @@ class MatakuliahController extends Controller
 
         //Validate
         $validatedData = $request->validate([
-            "kode_mk_obe" => "required",
-            "kode_mk_undiksha" => "required",
+            "kode_mk_obe" => "required|min:4|max:4|alpha_num",
+            "kode_mk_undiksha" => "required|min:10|max:10|alpha_num",
             "nama_mk" => "required",
             "deskripsi_mk" => "required",
             "sks" => "required",
             "semester" => "required",
+            "kategori_matakuliah" => "required",
         ]);
 
         // Save
@@ -54,6 +59,7 @@ class MatakuliahController extends Controller
             'deskripsi_mk' => $request->input('deskripsi_mk'),
             'sks' => $request->input('sks'),
             'semester' => $request->input('semester'),
+            'id_kategori_mk' => $request->input('kategori_matakuliah')
         ]);
 
         // Redirect
@@ -61,5 +67,71 @@ class MatakuliahController extends Controller
             "type" => "success", // success | error | warning | info | question
             "text" => "Created Success"
         ]);
+    }
+
+    public function edit($id)
+    {
+        return Inertia::render('Main/KoorProdi/Feature/MataKuliah/FormEdit', [
+            'mk' =>  MataKuliah::find($id),
+            'kategori_mk_list' => KategoriMatakuliah::all(),
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            // Check If user exist
+            $mk = MataKuliah::findOrFail($id);
+
+            // Validate
+            $request->validate([
+                "kode_mk_obe" => "required|digits:4|alpha_num",
+                "kode_mk_undiksha" => "required|digits:4|alpha_num",
+                "nama_mk" => "required",
+                "deskripsi_mk" => "required",
+                "sks" => "required",
+                "semester" => "required",
+                "kategori_matakuliah" => "required",
+            ]);
+
+            // Update
+            $mk->kode_mk_obe = $request->input('kode_mk_obe');
+            $mk->kode_mk_undiksha = $request->input('kode_mk_undiksha');
+            $mk->nama_mk = $request->input('nama_mk');
+            $mk->deskripsi_mk = $request->input('deskripsi_mk');
+            $mk->sks = $request->input('sks');
+            $mk->semester = $request->input('semester');
+            $mk->id_kategori_mk = $request->input('kategori_matakuliah');
+
+            // Save Update
+            $mk->save();
+
+            // Redirect
+            return to_route('mk.index')->with("msg", [
+                "type" => "success", // success | error | warning | info | question
+                "text" => "Updated Success"
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            // Check If user exist
+            $mk = MataKuliah::findOrFail($id);
+
+            // Delete
+            $mk->delete();
+
+            // Redirect
+            return to_route('user.index')->with("msg", [
+                "type" => "success", // success | error | warning | info | question
+                "text" => "Deleted Success"
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 }

@@ -10,7 +10,7 @@ class CPLController extends Controller
 {
     public function index(Request $request)
     {
-        return Inertia::render('Main/KoorProdi/Feature/CPL/CapaianProfilLulusan', [
+        return Inertia::render('Main/KoorProdi/Feature/CapaianProfilLulusan/CapaianProfilLulusan', [
             'cpl' => CPL::query()
                 ->when($request->input('search'), function ($query, $search) {
                     $query->where('kode_cpl', 'like', "%{$search}%")
@@ -26,7 +26,7 @@ class CPLController extends Controller
 
     public function create()
     {
-        return Inertia::render('Main/KoorProdi/Feature/CPL/FormAdd');
+        return Inertia::render('Main/KoorProdi/Feature/CapaianProfilLulusan/FormAdd');
     }
 
     public function store(Request $request)
@@ -59,7 +59,7 @@ class CPLController extends Controller
 
     public function edit($id)
     {
-        return Inertia::render('Main/KoorProdi/Feature/CPL/FormEdit', [
+        return Inertia::render('Main/KoorProdi/Feature/CapaianProfilLulusan/FormEdit', [
             'cpl' => CPL::select('id_cpl', 'kode_cpl', 'deskripsi_cpl', 'unsur', 'referensi')->find($id),
         ]);
     }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
-use App\Models\Prodi;
 use Illuminate\Http\Request;
 use App\Models\ProfilLulusan;
 
@@ -72,7 +71,7 @@ class ProfilLulusanController extends Controller
             $profil = ProfilLulusan::findOrFail($id);
 
             $request->validate([
-                "kode_pl" => "required",
+                "kode_pl" => "required|max:4|min:4",
                 "deskripsi_pl" => "required",
                 "unsur" => "required",
                 "referensi" => "required",

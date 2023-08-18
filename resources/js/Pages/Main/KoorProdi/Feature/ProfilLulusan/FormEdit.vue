@@ -26,8 +26,10 @@
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unsur</label>
                         <select id="default-profil-lulusan" v-model="form.unsur"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option selected disabled>Choose Unsur</option>
-                            <option v-for="unsur in unsurs" :value="unsur">{{ unsur }}</option>
+                            <option :selected="unsur.replace(/&nbsp;/g, ' ') == profil_lulusan.unsur.trim()"
+                                v-for="unsur in unsurs" :value="unsur.replace(/&nbsp;/g, ' ')">
+                                {{ unsur }}
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -90,7 +92,7 @@ const breadcrumbItems = ref([
 
 // Unsur
 const unsurs = ref([
-    'Sikap', 'Keterampilan Umum', 'Pengetahuan', 'Keterampilan Khusus'
+    'Sikap', 'Keterampilan Umum', 'Pengetahuan', 'Keterampilan Khusus',
 ])
 
 // Form data
