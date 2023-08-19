@@ -17,14 +17,14 @@
                         <label for="default-kode-pl"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode
                             Profil Lulusan</label>
-                        <input type="text" id="default-kode-pl" v-model="form.kode_pl"
+                        <input type="text" id="default-kode-pl" v-model="form.kode_pl" maxlength="4" minlength="4" required
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="EXAMPLE-00">
                     </div>
                     <div class="w-full mb-2 md:mb-0">
                         <label for="default-profil-lulusan"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unsur</label>
-                        <select id="default-profil-lulusan" v-model="form.unsur"
+                        <select id="default-profil-lulusan" v-model="form.unsur" required
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option :selected="unsur.replace(/&nbsp;/g, ' ') == profil_lulusan.unsur.trim()"
                                 v-for="unsur in unsurs" :value="unsur.replace(/&nbsp;/g, ' ')">
@@ -36,7 +36,7 @@
                 <div class="mb-6 w-full">
                     <label for="default-deskripsi"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Deskripsi</label>
-                    <textarea id="default-deskripsi" rows="3" v-model="form.deskripsi_pl"
+                    <textarea id="default-deskripsi" rows="3" v-model="form.deskripsi_pl" required
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Write the Profil Lulusan Deskripsi.."></textarea>
 
@@ -44,7 +44,7 @@
                 <div class="mb-6 w-full">
                     <label for="default-deskripsi"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Referensi</label>
-                    <textarea id="default-deskripsi" rows="3" v-model="form.referensi"
+                    <textarea id="default-deskripsi" rows="3" v-model="form.referensi" required
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Write the Referensi.."></textarea>
 

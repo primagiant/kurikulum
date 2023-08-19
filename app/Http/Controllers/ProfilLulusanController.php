@@ -98,20 +98,16 @@ class ProfilLulusanController extends Controller
 
     public function destroy($id)
     {
-        try {
-            // Check If user exist
-            $profil = ProfilLulusan::findOrFail($id);
+        // Check If user exist
+        $profil = ProfilLulusan::findOrFail($id);
 
-            // Delete
-            $profil->delete();
+        // Delete
+        $profil->delete();
 
-            // Redirect
-            return to_route('profil.lulusan.index')->with("msg", [
-                "type" => "success", // success | error | warning | info | question
-                "text" => "Deleted Success"
-            ]);
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
+        // Redirect
+        return redirect()->back()->with("msg", [
+            "type" => "success", // success | error | warning | info | question
+            "text" => "Deleted Success"
+        ]);
     }
 }

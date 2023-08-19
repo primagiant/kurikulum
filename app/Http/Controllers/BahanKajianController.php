@@ -34,11 +34,11 @@ class BahanKajianController extends Controller
 
         //Validate
         $validatedData = $request->validate([
-            "kode_bk" => "required",
+            "kode_bk" => "required|min:4|max:4|alpha_num",
             "nama_bk" => "required",
             "deskripsi_bk" => "required",
-            "bobot_min" => "required",
-            "bobot_max" => "required",
+            "bobot_min" => "required|numeric",
+            "bobot_max" => "required|numeric",
         ]);
 
         // Save

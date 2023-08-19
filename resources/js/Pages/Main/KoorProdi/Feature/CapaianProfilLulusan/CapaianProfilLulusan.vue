@@ -45,7 +45,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="capaian in cpl.data" :key="cpl.id_cpl" class="border-b dark:border-gray-700">
+                            <tr v-for="capaian, index in cpl.data" :key="cpl.id_cpl" class="border-b dark:border-gray-700">
                                 <th scope="row"
                                     class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {{ capaian.kode_cpl }}
@@ -54,8 +54,7 @@
                                 <td class="px-4 py-3">{{ capaian.deskripsi_cpl }}</td>
                                 <td class="px-4 py-3">{{ capaian.referensi }}</td>
                                 <td class="px-4 py-3 flex items-center justify-end gap-2">
-                                    <button :id="capaian.cpl_id + '-dropdown-button'"
-                                        :data-dropdown-toggle="capaian.cpl_id + '-dropdown'"
+                                    <button :id="index + '-dropdown-button'" :data-dropdown-toggle="index + '-dropdown'"
                                         class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
                                         type="button">
                                         <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
@@ -64,7 +63,7 @@
                                                 d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
                                         </svg>
                                     </button>
-                                    <div :id="capaian.cpl_id + '-dropdown'"
+                                    <div :id="index + '-dropdown'"
                                         class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
                                             aria-labelledby="apple-imac-27-dropdown-button">
@@ -84,10 +83,14 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr v-if="cpl.data.length == 0">
+                                <td colspan="4" class="px-4 py-3 font-medium text-gray-900 text-center">No Data</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-                <Pagination :links="cpl.links" :from="cpl.from" :to="cpl.to" :total="cpl.total" />
+                <Pagination v-if="cpl.data.length != 0" :links="cpl.links" :from="cpl.from" :to="cpl.to"
+                    :total="cpl.total" />
             </div>
         </div>
     </layout>
@@ -99,14 +102,11 @@ import Layout from '@/Pages/Layouts/KoorProdiLayout.vue'
 import { ref, watch, onMounted } from 'vue'
 import { router } from '@inertiajs/vue3'
 import Swal from 'sweetalert2'
+import { debounce } from 'lodash'
 
 // Import Component
 import Pagination from '@/Pages/Components/Pagination.vue'
 import Breadcrumb from '@/Pages/Components/Breadcrumbs/Breadcrumb.vue'
-
-// BaseUrl
-import GlobalVariable from '@/variable.js'
-const baseUrl = GlobalVariable.base_url
 
 // Setting Breadcrumb
 const breadcrumbItems = ref([
@@ -118,18 +118,18 @@ const breadcrumbItems = ref([
 const props = defineProps({
     cpl: Object,
     filters: Object,
-    flash: Array,
+    flash: Object,
 })
 
 // For Searching
 const search = ref(props.filters.search)
-watch(search, (value) => {
+watch(search, debounce((value) => {
     router.get(
-        'capaian-profil-lulusan',
+        route('cpl.index'),
         { search: value },
         { preserveState: true }
     )
-})
+}, 500))
 
 // For Delete
 const deleteCpl = (id) => {
@@ -143,14 +143,14 @@ const deleteCpl = (id) => {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            router.delete(`${baseUrl}/capaian-profil-lulusan/${id}`)
+            router.delete(route('cpl.destroy', { id: id }))
         }
     })
 }
 
 // Toast
 onMounted(() => {
-    if (props.flash.msg) {
+    if (props.flash.msg != null) {
         Swal.fire({
             toast: true,
             position: 'top-end',

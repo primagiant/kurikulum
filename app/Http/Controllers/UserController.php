@@ -71,63 +71,55 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        try {
-            // Check If user exist
-            $user = User::findOrFail($id);
+        // Check If user exist
+        $user = User::findOrFail($id);
 
-            // Validate
-            $request->validate([
-                "name" => "required",
-                'email' => [
-                    'required',
-                    'email',
-                    Rule::unique('users', 'email')->ignore($id),
-                ],
-            ]);
+        // Validate
+        $request->validate([
+            "name" => "required",
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users', 'email')->ignore($id),
+            ],
+        ]);
 
-            // Check if the password input is empty
-            if (empty($request->input('password'))) {
-                // If empty, use the existing password
-                $password = $user->password;
-            } else {
-                // If not empty, hash the new password
-                $password = bcrypt($request->input('password'));
-            }
-
-            // Update
-            $user->name = $request->input('name');
-            $user->email = $request->input('email');
-            $user->password = $password;
-
-            // Save Update
-            $user->save();
-
-            // Redirect
-            return to_route('user.index')->with("msg", [
-                "type" => "success", // success | error | warning | info | question
-                "text" => "Updated Success"
-            ]);
-        } catch (\Throwable $th) {
-            //throw $th;
+        // Check if the password input is empty
+        if (empty($request->input('password'))) {
+            // If empty, use the existing password
+            $password = $user->password;
+        } else {
+            // If not empty, hash the new password
+            $password = bcrypt($request->input('password'));
         }
+
+        // Update
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = $password;
+
+        // Save Update
+        $user->save();
+
+        // Redirect
+        return to_route('user.index')->with("msg", [
+            "type" => "success", // success | error | warning | info | question
+            "text" => "Updated Success"
+        ]);
     }
 
     public function destroy($id)
     {
-        try {
-            // Check If user exist
-            $user = User::findOrFail($id);
+        // Check If user exist
+        $user = User::findOrFail($id);
 
-            // Delete
-            $user->delete();
+        // Delete
+        $user->delete();
 
-            // Redirect
-            return to_route('user.index')->with("msg", [
-                "type" => "success", // success | error | warning | info | question
-                "text" => "Deleted Success"
-            ]);
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
+        // Redirect
+        return redirect()->back()->with("msg", [
+            "type" => "success", // success | error | warning | info | question
+            "text" => "Deleted Success"
+        ]);
     }
 }

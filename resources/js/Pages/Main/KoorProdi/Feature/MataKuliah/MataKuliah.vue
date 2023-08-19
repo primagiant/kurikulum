@@ -47,7 +47,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="mk in mata_kuliah.data" :key="mata_kuliah.id_bk"
+                            <tr v-for="mk, index in mata_kuliah.data" :key="mata_kuliah.id_bk"
                                 class="border-b dark:border-gray-700">
                                 <th scope="row"
                                     class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -62,8 +62,7 @@
                                 <td class="px-4 py-3">{{ mk.sks }}</td>
                                 <td class="px-4 py-3">{{ mk.semester }}</td>
                                 <td class="px-4 py-3 flex items-center justify-end gap-2">
-                                    <button :id="mk.id_mk + '-dropdown-button'"
-                                        :data-dropdown-toggle="mk.id_mk + '-dropdown'"
+                                    <button :id="index + '-dropdown-button'" :data-dropdown-toggle="index + '-dropdown'"
                                         class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
                                         type="button">
                                         <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
@@ -72,7 +71,7 @@
                                                 d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
                                         </svg>
                                     </button>
-                                    <div :id="mk.id_mk + '-dropdown'"
+                                    <div :id="index + '-dropdown'"
                                         class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
                                             aria-labelledby="apple-imac-27-dropdown-button">
@@ -127,14 +126,14 @@ const breadcrumbItems = ref([
 const props = defineProps({
     mata_kuliah: Object,
     filters: Object,
-    flash: Array,
+    flash: Object,
 })
 
 // For Searching
 const search = ref(props.filters.search)
 watch(search, debounce((value) => {
     router.get(
-        'mata-kuliah',
+        route('mk.index'),
         { search: value },
         { preserveState: true }
     )
@@ -159,7 +158,7 @@ const deleteMK = (id) => {
 
 // Toast
 onMounted(() => {
-    if (props.flash.msg) {
+    if (props.flash.msg != null) {
         Swal.fire({
             toast: true,
             position: 'top-end',

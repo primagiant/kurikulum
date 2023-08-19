@@ -40,6 +40,9 @@ class RoleController extends Controller
 
     public function destroy($id)
     {
-        //
+        return redirect()->back()->with("msg", [
+            "type" => "success", // success | error | warning | info | question
+            "text" => "Deleted Success"
+        ]);
     }
 }
