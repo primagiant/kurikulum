@@ -1,6 +1,6 @@
 <template>
     <Head title="Profil Lulusan" />
-    <div>
+    <layout>
         <Breadcrumb :items="breadcrumbItems" />
         <div class="p-6">
             <h1 class="mb-5">Profil Lulusan List</h1>
@@ -18,7 +18,7 @@
                                             clip-rule="evenodd" />
                                     </svg>
                                 </div>
-                                <input type="text" id="simple-search" v-model="search" placeholder="Search by name or email"
+                                <input type="text" id="simple-search" v-model="search" placeholder="Cari Profil Lulusan"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                             </div>
                         </form>
@@ -45,16 +45,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="profil in profil_lulusan.data" :key="profil.id_pl"
+                            <tr v-for="profil, index in profil_lulusan.data" :key="profil.id_pl"
                                 class="border-b dark:border-gray-700">
-                                <th scope="row"
-                                    class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <th class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {{ profil.kode_pl }}
                                 </th>
                                 <td class="px-4 py-3">{{ profil.unsur }}</td>
                                 <td class="px-4 py-3">{{ profil.deskripsi_pl }}</td>
                                 <td class="px-4 py-3">{{ profil.referensi }}</td>
-                                <td class="px-4 py-3 flex items-center justify-end">
+                                <td class="px-4 py-3 flex items-center justify-end gap-2">
                                     <button :id="profil.id_pl + '-dropdown-button'"
                                         :data-dropdown-toggle="profil.id_pl + '-dropdown'"
                                         class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
@@ -71,49 +70,44 @@
                                             aria-labelledby="apple-imac-27-dropdown-button">
                                             <li>
                                                 <Link :href="route('profil.lulusan.edit', profil.id_pl)"
-                                                    class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                    class="block py-2 px-4 hover:bg-gray-100">
                                                 Edit
                                                 </Link>
                                             </li>
                                         </ul>
-                                        <div class="py-1">
-                                            <a href="#" @click="deleteUser(profil.id_pl)"
-                                                class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                                        <div class=" py-1 text-gray-700">
+                                            <a href="#" @click="deletePl(profil.id_pl)"
+                                                class="block py-2 px-4 hover:bg-gray-100">
                                                 Delete
                                             </a>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
+                            <tr v-if="profil_lulusan.data.length == 0">
+                                <td colspan="4" class="px-4 py-3 font-medium text-gray-900 text-center">No Data</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-                <Pagination :links="profil_lulusan.links" :from="profil_lulusan.from" :to="profil_lulusan.to"
-                    :total="profil_lulusan.total" />
+                <Pagination v-if="profil_lulusan.data.length != 0" :links="profil_lulusan.links" :from="profil_lulusan.from"
+                    :to="profil_lulusan.to" :total="profil_lulusan.total" />
             </div>
         </div>
-    </div>
+    </layout>
 </template>
-<script>
-// For Layout
-import Layout from '@/Pages/Layouts/KoorProdiLayout.vue'
-export default {
-    layout: Layout,
-}
-</script>
+
 <script setup>
 // Import Library
+import Layout from '@/Pages/Layouts/KoorProdiLayout.vue'
 import { ref, watch, onMounted } from 'vue'
 import { router } from '@inertiajs/vue3'
 import Swal from 'sweetalert2'
+import { debounce } from 'lodash'
 
 // Import Component
 import Pagination from '@/Pages/Components/Pagination.vue'
 import Breadcrumb from '@/Pages/Components/Breadcrumbs/Breadcrumb.vue'
-
-// BaseUrl
-import GlobalVariable from '@/variable.js'
-const baseUrl = GlobalVariable.base_url
 
 // Setting Breadcrumb
 const breadcrumbItems = ref([
@@ -125,21 +119,21 @@ const breadcrumbItems = ref([
 const props = defineProps({
     profil_lulusan: Object,
     filters: Object,
-    flash: Array,
+    flash: Object,
 })
 
 // For Searching
 const search = ref(props.filters.search)
-watch(search, (value) => {
+watch(search, debounce((value) => {
     router.get(
         'profil-lulusan',
         { search: value },
         { preserveState: true }
     )
-})
+}, 500))
 
 // For Delete Profil Lulusan
-const deleteUser = (id) => {
+const deletePl = (id) => {
     Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -150,14 +144,14 @@ const deleteUser = (id) => {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            router.delete(`${baseUrl}/profil-lulusan/${id}`)
+            router.delete(route('profil.lulusan.destroy', id), { preserveScroll: true })
         }
     })
 }
 
 // Toast
 onMounted(() => {
-    if (props.flash.msg) {
+    if (props?.flash.msg) {
         Swal.fire({
             toast: true,
             position: 'top-end',

@@ -23,6 +23,7 @@
         "@vitejs/plugin-vue": "^4.0.0",
         "flowbite": "^1.6.4",
         "sweetalert2": "^11.7.12",
+        "tailwind-scrollbar-hide": "^1.1.7",
         "vue": "^3.2.47"
     }
 }

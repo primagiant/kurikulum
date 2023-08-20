@@ -10,7 +10,7 @@ class CPLController extends Controller
 {
     public function index(Request $request)
     {
-        return Inertia::render('Main/KoorProdi/Feature/CPL/CapaianProfilLulusan', [
+        return Inertia::render('Main/KoorProdi/Feature/CapaianProfilLulusan/CapaianProfilLulusan', [
             'cpl' => CPL::query()
                 ->when($request->input('search'), function ($query, $search) {
                     $query->where('kode_cpl', 'like', "%{$search}%")
@@ -26,7 +26,7 @@ class CPLController extends Controller
 
     public function create()
     {
-        return Inertia::render('Main/KoorProdi/Feature/CPL/FormAdd');
+        return Inertia::render('Main/KoorProdi/Feature/CapaianProfilLulusan/FormAdd');
     }
 
     public function store(Request $request)
@@ -35,7 +35,7 @@ class CPLController extends Controller
 
         //Validate
         $validatedData = $request->validate([
-            "kode_cpl" => "required",
+            "kode_cpl" => "required|min:5|max:5|alpha_num",
             "deskripsi_cpl" => "required",
             "unsur" => "required",
             "referensi" => "required",
@@ -59,27 +59,51 @@ class CPLController extends Controller
 
     public function edit($id)
     {
-        return Inertia::render('Main/KoorProdi/Feature/CPL/FormEdit', [
+        return Inertia::render('Main/KoorProdi/Feature/CapaianProfilLulusan/FormEdit', [
             'cpl' => CPL::select('id_cpl', 'kode_cpl', 'deskripsi_cpl', 'unsur', 'referensi')->find($id),
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Check If user exist
+        $cpl = CPL::findOrFail($id);
+
+        $request->validate([
+            "kode_cpl" => "required|min:5|max:5|alpha_num",
+            "deskripsi_cpl" => "required",
+            "unsur" => "required",
+            "referensi" => "required",
+        ]);
+
+        // Update
+        $cpl->kode_cpl = $request->input('kode_cpl');
+        $cpl->deskripsi_cpl = $request->input('deskripsi_cpl');
+        $cpl->unsur = $request->input('unsur');
+        $cpl->referensi = $request->input('referensi');
+
+        // Save Update
+        $cpl->save();
+
+        // Redirect
+        return to_route('cpl.index')->with("msg", [
+            "type" => "success", // success | error | warning | info | question
+            "text" => "Updated Success"
         ]);
     }
 
     public function destroy($id)
     {
-        try {
-            // Check If data exist
-            $cpl = CPL::findOrFail($id);
+        // Check If data exist
+        $cpl = CPL::findOrFail($id);
 
-            // Delete
-            $cpl->delete();
+        // Delete
+        $cpl->delete();
 
-            // Redirect
-            return to_route('cpl.index')->with("msg", [
-                "type" => "success", // success | error | warning | info | question
-                "text" => "Deleted Success"
-            ]);
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
+        // Redirect
+        return redirect()->back()->with("msg", [
+            "type" => "success", // success | error | warning | info | question
+            "text" => "Deleted Success"
+        ]);
     }
 }

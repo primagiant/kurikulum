@@ -10,10 +10,9 @@
                             d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                             clip-rule="evenodd"></path>
                     </svg>
-                    <Link as="button" :href="item.link"
-                        class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                    {{ item.name }}
-                    </Link>
+                    <Component :is="item?.link ? 'Link' : 'span'" :href="item.link"
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+                        v-html="item.name" />
                 </div>
             </li>
         </ol>

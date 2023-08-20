@@ -1,22 +1,16 @@
 <template>
     <Head title="Home" />
-    <div>
+    <layout>
         <Breadcrumb :items="breadcrumbItems" />
         <div class="p-6">
             Dashboard
         </div>
-    </div>
+    </layout>
 </template>
-
-<script>
-import Layout from '@/Pages/Layouts/SuperAdminLayout.vue'
-export default {
-    layout: Layout
-}
-</script>
 
 <script setup>
 import { ref } from 'vue'
+import Layout from '@/Pages/Layouts/SuperAdminLayout.vue'
 import Breadcrumb from '@/Pages/Components/Breadcrumbs/Breadcrumb.vue'
 
 const breadcrumbItems = ref([

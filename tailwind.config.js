@@ -30,5 +30,5 @@ module.exports = {
             quick: ["Quicksand", "sans-serif"],
         },
     },
-    plugins: [require("flowbite/plugin")],
+    plugins: [require("tailwind-scrollbar-hide"), require("flowbite/plugin")],
 };

@@ -27,6 +27,7 @@ class MataKuliahFactory extends Factory
             'deskripsi_mk' => fake()->text(),
             'sks' => rand(1, 6),
             'semester' => rand(1, 8),
+            'id_kategori_mk' => 1,
             'active' => 1
         ];
     }

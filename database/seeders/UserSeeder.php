@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
     {
         $superAdminRole = Role::where('name', 'super_admin')->first();
         $koorProdiRole = Role::where('name', 'koor_prodi')->first();
+        $dosenRole = Role::where('name', 'dosen')->first();
 
         $superAdmin = User::create([
             'name' => "Super Admin",
@@ -34,7 +35,16 @@ class UserSeeder extends Seeder
             'password' => bcrypt('password')
         ]);
 
+        $dosen1 = User::create([
+            'name' => "Dosen",
+            'email' => 'dosen1@sistem.com',
+            'email_verified_at' => now(),
+            'prodi' => 1,
+            'password' => bcrypt('password')
+        ]);
+
         $superAdmin->roles()->attach($superAdminRole);
         $koorProdi->roles()->attach($koorProdiRole);
+        $dosen1->roles()->attach($dosenRole);
     }
 }

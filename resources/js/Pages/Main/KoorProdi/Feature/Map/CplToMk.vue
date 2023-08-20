@@ -1,6 +1,6 @@
 <template>
     <Head title="Capain Pembeljaran Lulusan - Mata Kuliah" />
-    <div>
+    <layout>
         <Breadcrumb :items="breadcrumbItems" />
         <div class="p-6">
             <h1 class="mb-5">Maping Capain Pembeljaran Lulusan - Mata Kuliah</h1>
@@ -47,18 +47,12 @@
                 </div>
             </div>
         </div>
-    </div>
+    </layout>
 </template>
-
-<script>
-import Layout from '@/Pages/Layouts/KoorProdiLayout.vue'
-export default {
-    layout: Layout
-}
-</script>
 
 <script setup>
 // Library
+import Layout from '@/Pages/Layouts/KoorProdiLayout.vue'
 import { ref, onBeforeMount, onMounted } from 'vue'
 import { router } from '@inertiajs/vue3'
 

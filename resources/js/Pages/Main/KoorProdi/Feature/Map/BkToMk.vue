@@ -1,6 +1,6 @@
 <template>
     <Head title="User" />
-    <div>
+    <layout>
         <Breadcrumb :items="breadcrumbItems" />
         <div class="p-6">
             <h1 class="mb-5">Maping Bahan Kajian - Mata Kuliah</h1>
@@ -51,18 +51,12 @@
                 </div>
             </div>
         </div>
-    </div>
+    </layout>
 </template>
-
-<script>
-import Layout from '@/Pages/Layouts/KoorProdiLayout.vue'
-export default {
-    layout: Layout
-}
-</script>
 
 <script setup>
 // Library
+import Layout from '@/Pages/Layouts/KoorProdiLayout.vue'
 import { ref, onBeforeMount } from 'vue'
 import { router } from '@inertiajs/vue3'
 

@@ -1,21 +1,17 @@
 <template>
     <Head title="Home" />
-    <div>
-        <Breadcrumb :items="breadcrumbItems" />
-        <div class="p-6">
-            Dashboard
+    <Layout>
+        <div>
+            <Breadcrumb :items="breadcrumbItems" />
+            <div class="p-6">
+                Dashboard
+            </div>
         </div>
-    </div>
+    </Layout>
 </template>
 
-<script>
-import Layout from '@/Pages/Layouts/KoorProdiLayout.vue'
-export default {
-    layout: Layout
-}
-</script>
-
 <script setup>
+import Layout from '@/Pages/Layouts/KoorProdiLayout.vue'
 import { ref } from 'vue'
 import Breadcrumb from '@/Pages/Components/Breadcrumbs/Breadcrumb.vue'
 

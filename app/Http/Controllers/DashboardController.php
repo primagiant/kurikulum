@@ -16,6 +16,9 @@ class DashboardController extends Controller
         if ($roleName == "super_admin") {
             return Inertia::render('Main/SuperAdmin/Dashboard');
         }
+        if ($roleName == "dosen") {
+            return Inertia::render('Main/Dosen/Dashboard');
+        }
         return Inertia::render('Main/KoorProdi/Dashboard');
     }
 

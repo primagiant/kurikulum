@@ -6,10 +6,12 @@ use App\Http\Controllers\MapController;
 use App\Http\Controllers\CPMKController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SubCPMKController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\BahanKajianController;
+use App\Http\Controllers\PengampuanController;
 use App\Http\Controllers\ProfilLulusanController;
 
 /*
@@ -83,13 +85,9 @@ Route::middleware('auth', 'check.roles:koor_prodi')->group(function () {
     Route::post('/mata-kuliah/{id}/edit', [MataKuliahController::class, 'update'])->name('mk.update');
     Route::delete('/mata-kuliah/{id}', [MataKuliahController::class, 'destroy'])->name('mk.destroy');
 
-    //CPMK
-    Route::get('/cpmk', [CPMKController::class, 'index'])->name('cpmk.index');
-    Route::get('/cpmk/create', [CPMKController::class, 'create'])->name('cpmk.create');
-    Route::post('/cpmk/create', [CPMKController::class, 'store'])->name('cpmk.store');
-    Route::get('/cpmk/{id}/edit', [CPMKController::class, 'edit'])->name('cpmk.edit');
-    Route::post('/cpmk/{id}/edit', [CPMKController::class, 'update'])->name('cpmk.update');
-    Route::delete('/cpmk/{id}', [CPMKController::class, 'destroy'])->name('cpmk.destroy');
+    // Pengampuan
+    Route::get('/pengampuan', [PengampuanController::class, 'index'])->name('pengampuan.index');
+    Route::post('/pengampuan', [PengampuanController::class, 'store'])->name('pengampuan.store');
 });
 
 // Superadmin (crud only)
@@ -104,9 +102,31 @@ Route::middleware('auth', 'check.roles:super_admin')->group(function () {
 
     // Role
     Route::get('/role', [RoleController::class, 'index'])->name('role.index');
-    Route::get('/role/create', [RoleController::class, 'create'])->name('role.create');
-    Route::post('/role/create', [RoleController::class, 'store'])->name('role.store');
-    Route::get('/role/{id}/edit', [RoleController::class, 'edit'])->name('role.edit');
-    Route::post('/role/{id}/edit', [RoleController::class, 'update'])->name('role.update');
-    Route::delete('/role/{id}', [RoleController::class, 'destroy'])->name('role.destroy');
+
+    // Prodi
+    Route::get('/prodi', [UserController::class, 'index'])->name('prodi.index');
+    Route::get('/prodi/create', [UserController::class, 'create'])->name('prodi.create');
+    Route::post('/prodi/create', [UserController::class, 'store'])->name('prodi.store');
+    Route::get('/prodi/{id}/edit', [UserController::class, 'edit'])->name('prodi.edit');
+    Route::post('/prodi/{id}/edit', [UserController::class, 'update'])->name('prodi.update');
+    Route::delete('/prodi/{id}', [UserController::class, 'destroy'])->name('prodi.destroy');
+});
+
+// Dosen
+Route::middleware('auth', 'check.roles:dosen')->group(function () {
+    //CPMK
+    Route::get('/cpmk', [CPMKController::class, 'index'])->name('cpmk.index');
+    Route::get('/cpmk/create', [CPMKController::class, 'create'])->name('cpmk.create');
+    Route::post('/cpmk/create', [CPMKController::class, 'store'])->name('cpmk.store');
+    Route::get('/cpmk/{id}/edit', [CPMKController::class, 'edit'])->name('cpmk.edit');
+    Route::post('/cpmk/{id}/edit', [CPMKController::class, 'update'])->name('cpmk.update');
+    Route::delete('/cpmk/{id}', [CPMKController::class, 'destroy'])->name('cpmk.destroy');
+
+    //Sub-CPMK
+    Route::get('/sub-cpmk', [SubCPMKController::class, 'index'])->name('subcpmk.index');
+    Route::get('/sub-cpmk/create', [SubCPMKController::class, 'create'])->name('subcpmk.create');
+    Route::post('/sub-cpmk/create', [SubCPMKController::class, 'store'])->name('subcpmk.store');
+    Route::get('/sub-cpmk/{id}/edit', [SubCPMKController::class, 'edit'])->name('subcpmk.edit');
+    Route::post('/sub-cpmk/{id}/edit', [SubCPMKController::class, 'update'])->name('subcpmk.update');
+    Route::delete('/sub-cpmk/{id}', [SubCPMKController::class, 'destroy'])->name('subcpmk.destroy');
 });

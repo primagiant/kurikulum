@@ -1,6 +1,6 @@
 <template>
     <Head title="User" />
-    <div>
+    <layout>
         <Breadcrumb :items="breadcrumbItems" />
         <div class="p-6">
             <h1 class="mb-5">User List</h1>
@@ -37,20 +37,24 @@
                             <tr>
                                 <th scope="col" class="px-4 py-3">Username</th>
                                 <th scope="col" class="px-4 py-3">Email</th>
+                                <th scope="col" class="px-4 py-3">Role</th>
+                                <th scope="col" class="px-4 py-3">Prodi</th>
                                 <th scope="col" class="px-4 py-3">
                                     <span class="sr-only">Actions</span>
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="user in users.data" :key="user.id" class="border-b dark:border-gray-700">
+                            <tr v-for="user, index in users.data" :key="user.id" class="border-b dark:border-gray-700">
                                 <th scope="row"
                                     class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {{ user.name }}
                                 </th>
                                 <td class="px-4 py-3">{{ user.email }}</td>
+                                <td class="px-4 py-3">{{ user.role_name }}</td>
+                                <td class="px-4 py-3">{{ user.nama_prodi }}</td>
                                 <td class="px-4 py-3 flex items-center justify-end">
-                                    <button :id="user.id + '-dropdown-button'" :data-dropdown-toggle="user.id + '-dropdown'"
+                                    <button :id="index + '-dropdown-button'" :data-dropdown-toggle="index + '-dropdown'"
                                         class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
                                         type="button">
                                         <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
@@ -59,7 +63,7 @@
                                                 d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
                                         </svg>
                                     </button>
-                                    <div :id="user.id + '-dropdown'"
+                                    <div :id="index + '-dropdown'"
                                         class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
                                             aria-labelledby="apple-imac-27-dropdown-button">
@@ -70,7 +74,7 @@
                                                 </Link>
                                             </li>
                                         </ul>
-                                        <div class="py-1">
+                                        <div class="py-1" :class="user.role_name == 'super_admin' ? 'hidden' : ''">
                                             <a href="#" @click="deleteUser(user.id)"
                                                 class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
                                                 Delete
@@ -79,36 +83,30 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr v-if="users.data.length == 0">
+                                <td colspan="4" class="px-4 py-3 font-medium text-gray-900 text-center">No Data</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-                <Pagination :links="users.links" :from="users.from" :to="users.to" :total="users.total" />
+                <Pagination v-if="users.data.length != 0" :links="users.links" :from="users.from" :to="users.to"
+                    :total="users.total" />
             </div>
         </div>
-    </div>
+    </layout>
 </template>
-
-<script>
-// For Layout
-import Layout from '@/Pages/Layouts/SuperAdminLayout.vue'
-export default {
-    layout: Layout,
-}
-</script>
 
 <script setup>
 // Import Library
 import { ref, watch, onMounted } from 'vue'
 import { router } from '@inertiajs/vue3'
 import Swal from 'sweetalert2'
+import { debounce } from 'lodash'
 
 // Import Component
+import Layout from '@/Pages/Layouts/SuperAdminLayout.vue'
 import Pagination from '@/Pages/Components/Pagination.vue'
 import Breadcrumb from '@/Pages/Components/Breadcrumbs/Breadcrumb.vue'
-
-// BaseUrl
-import GlobalVariable from '@/variable.js'
-const baseUrl = GlobalVariable.base_url
 
 // Setting Breadcrumb
 const breadcrumbItems = ref([
@@ -119,19 +117,20 @@ const breadcrumbItems = ref([
 // Properti
 const props = defineProps({
     users: Object,
+    role: Object,
     filters: Object,
-    flash: Array,
+    flash: Object,
 })
 
 // For Searching
 const search = ref(props.filters.search)
-watch(search, (value) => {
+watch(search, debounce((value) => {
     router.get(
-        'user',
+        route('user.index'),
         { search: value },
         { preserveState: true }
     )
-})
+}, 500))
 
 // For Delete User
 const deleteUser = (userId) => {
@@ -145,7 +144,7 @@ const deleteUser = (userId) => {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            router.delete(`${baseUrl}/user/${userId}`)
+            router.delete(route('user.destroy', { id: userId }))
         }
     })
 }

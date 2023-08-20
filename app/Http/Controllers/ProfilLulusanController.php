@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
-use App\Models\Prodi;
 use Illuminate\Http\Request;
 use App\Models\ProfilLulusan;
 
@@ -72,7 +71,7 @@ class ProfilLulusanController extends Controller
             $profil = ProfilLulusan::findOrFail($id);
 
             $request->validate([
-                "kode_pl" => "required",
+                "kode_pl" => "required|max:4|min:4",
                 "deskripsi_pl" => "required",
                 "unsur" => "required",
                 "referensi" => "required",
@@ -99,20 +98,16 @@ class ProfilLulusanController extends Controller
 
     public function destroy($id)
     {
-        try {
-            // Check If user exist
-            $profil = ProfilLulusan::findOrFail($id);
+        // Check If user exist
+        $profil = ProfilLulusan::findOrFail($id);
 
-            // Delete
-            $profil->delete();
+        // Delete
+        $profil->delete();
 
-            // Redirect
-            return to_route('profil.lulusan.index')->with("msg", [
-                "type" => "success", // success | error | warning | info | question
-                "text" => "Deleted Success"
-            ]);
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
+        // Redirect
+        return redirect()->back()->with("msg", [
+            "type" => "success", // success | error | warning | info | question
+            "text" => "Deleted Success"
+        ]);
     }
 }
