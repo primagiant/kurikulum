@@ -74,13 +74,9 @@ import { useForm } from '@inertiajs/vue3'
 // Import Component
 import Breadcrumb from '@/Pages/Components/Breadcrumbs/Breadcrumb.vue'
 
-// BaseUrl
-import GlobalVariable from '@/variable.js'
-const baseUrl = GlobalVariable.base_url
-
 //Properti
 const props = defineProps({
-    'profil_lulusan': Array,
+    'profil_lulusan': Object,
 })
 
 // Setting Breadcrumb
@@ -105,6 +101,6 @@ let form = useForm({
 
 // Submit Form
 const submit = () => {
-    form.post(`${baseUrl}/profil-lulusan/${props.profil_lulusan.id_pl}/edit`)
+    form.post(route('profil.lulusan.update', { id: props.profil_lulusan.id_pl }))
 }
 </script>

@@ -132,7 +132,7 @@ const props = defineProps({
 const breadcrumbItems = ref([
     { name: "Feature" },
     { name: "Mata Kuliah", link: route('mk.index') },
-    { name: "Update", link: route('mk.create') },
+    { name: "Edit", link: route('mk.edit', { id: props.mk.id_mk }) },
 ])
 
 const semesters = ref([

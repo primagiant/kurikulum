@@ -46,7 +46,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="bk in bahan_kajian.data" :key="bahan_kajian.id_bk"
+                            <tr v-for="bk, index in bahan_kajian.data" :key="bahan_kajian.id_bk"
                                 class="border-b dark:border-gray-700">
                                 <th scope="row"
                                     class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -57,8 +57,7 @@
                                 <td class="px-4 py-3">{{ bk.bobot_min }}</td>
                                 <td class="px-4 py-3">{{ bk.bobot_max }}</td>
                                 <td class="px-4 py-3 flex items-center justify-end gap-2">
-                                    <button :id="bk.bk_id + '-dropdown-button'"
-                                        :data-dropdown-toggle="bk.bk_id + '-dropdown'"
+                                    <button :id="index + '-dropdown-button'" :data-dropdown-toggle="index + '-dropdown'"
                                         class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
                                         type="button">
                                         <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
@@ -67,12 +66,12 @@
                                                 d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
                                         </svg>
                                     </button>
-                                    <div :id="bk.bk_id + '-dropdown'"
+                                    <div :id="index + '-dropdown'"
                                         class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
                                             aria-labelledby="apple-imac-27-dropdown-button">
                                             <li>
-                                                <Link :href="route('cpl.edit', bk.id_bk)"
+                                                <Link :href="route('bahan.kajian.edit', { id: bk.id_bk })"
                                                     class="block py-2 px-4 hover:bg-gray-100">
                                                 Edit
                                                 </Link>
@@ -87,11 +86,14 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr v-if="bahan_kajian.data.length == 0">
+                                <td colspan="5" class="px-4 py-3 font-medium text-gray-900 text-center">No Data</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-                <Pagination :links="bahan_kajian.links" :from="bahan_kajian.from" :to="bahan_kajian.to"
-                    :total="bahan_kajian.total" />
+                <Pagination v-if="bahan_kajian.data.length != 0" :links="bahan_kajian.links" :from="bahan_kajian.from"
+                    :to="bahan_kajian.to" :total="bahan_kajian.total" />
             </div>
         </div>
     </layout>
@@ -102,14 +104,11 @@ import Layout from '@/Pages/Layouts/KoorProdiLayout.vue'
 import { ref, watch, onMounted } from 'vue'
 import { router } from '@inertiajs/vue3'
 import Swal from 'sweetalert2'
+import { debounce } from 'lodash'
 
 // Import Component
 import Pagination from '@/Pages/Components/Pagination.vue'
 import Breadcrumb from '@/Pages/Components/Breadcrumbs/Breadcrumb.vue'
-
-// BaseUrl
-import GlobalVariable from '@/variable.js'
-const baseUrl = GlobalVariable.base_url
 
 // Setting Breadcrumb
 const breadcrumbItems = ref([
@@ -121,18 +120,18 @@ const breadcrumbItems = ref([
 const props = defineProps({
     bahan_kajian: Object,
     filters: Object,
-    flash: Array,
+    flash: Object,
 })
 
 // For Searching
 const search = ref(props.filters.search)
-watch(search, (value) => {
+watch(search, debounce((value) => {
     router.get(
-        'bahan-kajian',
+        route('bahan.kajian.index'),
         { search: value },
         { preserveState: true }
     )
-})
+}, 500))
 
 // For Delete
 const deleteBK = (id) => {
@@ -146,7 +145,7 @@ const deleteBK = (id) => {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            router.delete(`${baseUrl}/bahan-kajian/${id}`)
+            router.delete(route('bahan.kajian.destroy', { id: id }))
         }
     })
 }

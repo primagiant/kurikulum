@@ -69,7 +69,7 @@
     </header>
     <Sidebar :items="sidebarItems" class="lg:translate-x-0 z-40" :class="navOpen ? 'translate-x-0' : '-translate-x-72'" />
     <div class="flex w-full">
-        <div class="bg-gray-50 overflow-hidden lg:ml-64 md:ml-0 transition-transform w-full mt-14"
+        <div class="bg-gray-50 overflow-hidden lg:ml-64 md:ml-0 transition-transform w-full mt-16"
             :class="navOpen ? 'md:ml-64' : 'md:ml-0'">
             <slot />
         </div>

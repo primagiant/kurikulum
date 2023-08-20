@@ -87,7 +87,7 @@ Route::middleware('auth', 'check.roles:koor_prodi')->group(function () {
 
     // Pengampuan
     Route::get('/pengampuan', [PengampuanController::class, 'index'])->name('pengampuan.index');
-    Route::post('/pengampuan', [PengampuanController::class, 'index'])->name('pengampuan.store');
+    Route::post('/pengampuan', [PengampuanController::class, 'store'])->name('pengampuan.store');
 });
 
 // Superadmin (crud only)
@@ -102,15 +102,18 @@ Route::middleware('auth', 'check.roles:super_admin')->group(function () {
 
     // Role
     Route::get('/role', [RoleController::class, 'index'])->name('role.index');
-    Route::get('/role/create', [RoleController::class, 'create'])->name('role.create');
-    Route::post('/role/create', [RoleController::class, 'store'])->name('role.store');
-    Route::get('/role/{id}/edit', [RoleController::class, 'edit'])->name('role.edit');
-    Route::post('/role/{id}/edit', [RoleController::class, 'update'])->name('role.update');
-    Route::delete('/role/{id}', [RoleController::class, 'destroy'])->name('role.destroy');
+
+    // Prodi
+    Route::get('/prodi', [UserController::class, 'index'])->name('prodi.index');
+    Route::get('/prodi/create', [UserController::class, 'create'])->name('prodi.create');
+    Route::post('/prodi/create', [UserController::class, 'store'])->name('prodi.store');
+    Route::get('/prodi/{id}/edit', [UserController::class, 'edit'])->name('prodi.edit');
+    Route::post('/prodi/{id}/edit', [UserController::class, 'update'])->name('prodi.update');
+    Route::delete('/prodi/{id}', [UserController::class, 'destroy'])->name('prodi.destroy');
 });
 
 // Dosen
-Route::middleware('auth', 'check.roles:super_admin')->group(function () {
+Route::middleware('auth', 'check.roles:dosen')->group(function () {
     //CPMK
     Route::get('/cpmk', [CPMKController::class, 'index'])->name('cpmk.index');
     Route::get('/cpmk/create', [CPMKController::class, 'create'])->name('cpmk.create');
