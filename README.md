@@ -18,8 +18,10 @@
 
     php artisan migrate
 
+    php artisan db:seed
+
 #### APP & DB UI Acess
 
     APP : http://localhost/public
 
-    DATABASE : http://yourip:8080
+    DATABASE : http://localhost:8080
