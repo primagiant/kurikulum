@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\ProfilLulusan;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,17 +17,14 @@ class ProfilLulusanFactory extends Factory
      */
     public function definition()
     {
-        $number = $this->faker->unique()->numberBetween(1, 99);
-        $kode_pl = 'PL' . str_pad($number, 2, '0', STR_PAD_LEFT);
         $unsur = ['Sikap', 'Keterampilan Umum', 'Pengetahuan', 'Keterampilan Khusus'];
-
-        return [
+        $attributes = [
             'id_prodi' => 1,
-            'kode_pl' => $kode_pl,
             'deskripsi_pl' => fake()->text(),
             'unsur' => $this->faker->randomElement($unsur),
-            'referensi' => fake()->text(),
+            'referensi' => fake()->sentence(),
             'active' => 1,
         ];
+        return ProfilLulusan::createProfilLulusan($attributes);
     }
 }

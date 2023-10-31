@@ -17,11 +17,11 @@ class DatabaseSeeder extends Seeder
             ProdiSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
-            CPLSeeder::class,
-            ProfilLulusanSeeder::class,
-            BahanKajianSeeder::class,
+            // CPLSeeder::class,
+            // ProfilLulusanSeeder::class,
+            // BahanKajianSeeder::class,
             KategoriMatakuliahSeeder::class,
-            MataKuliahSeeder::class,
+            // MataKuliahSeeder::class,
         ]);
     }
 }

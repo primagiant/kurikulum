@@ -9,7 +9,7 @@ class MapCplMk extends Model
 {
     use HasFactory;
     protected $table = 'map_cpl_mk';
-    protected $primaryKey = 'id_map_cpl_bk';
+    protected $primaryKey = 'id_map_cpl_mk';
     protected $fillable = [
         'id_cpl',
         'id_mk',

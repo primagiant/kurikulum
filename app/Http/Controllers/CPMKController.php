@@ -2,31 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CPL;
 use App\Models\CPMK;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CPMKController extends Controller
 {
+
     public function index(Request $request)
     {
-        return Inertia::render('Main/KoorProdi/Feature/CPMK/CPMK', [
-            'cpmk' => CPMK::query()
+        $user = auth()->user();
+        return Inertia::render("Main/KoorProdi/Feature/CPMK", [
+            'cpmk' => DB::table('cpmk')
+                ->join('cpl', 'cpl.id_cpl', '=', 'cpmk.id_cpl')
+                ->select([
+                    'cpmk.id_cpmk', 'cpmk.kode_cpmk',
+                    'cpmk.deskripsi_cpmk',
+                    'cpmk.active as active_cpmk',
+                    'cpl.id_cpl', 'cpl.kode_cpl'
+                ])
+                ->where('cpmk.id_prodi', '=', $user->prodi)
                 ->when($request->input('search'), function ($query, $search) {
-                    $query->where('kode_cpmk', 'like', "%{$search}%")
-                        ->OrWhere('deskripsi_cpl', 'like', "%{$search}%");
+                    $query->where('cpmk.kode_cpmk', 'like', "%{$search}%")
+                        ->OrWhere('cpmk.deskripsi_cpmk', 'like', "%{$search}%")
+                        ->OrWhere('cpl.kode_cpl', 'like', "%{$search}%");
                 })
-                ->paginate(10)
-                ->withQueryString(),
+                ->orderBy('cpmk.kode_cpmk')
+                ->paginate(10),
             'filters' => $request->only(["search"]),
-        ]);
-    }
-
-    public function create()
-    {
-        return Inertia::render('Main/KoorProdi/Feature/CPMK/FormAdd', [
-            'cpl' => CPL::All()
+            'cpl' => DB::table('cpl')
+                ->where('cpl.id_prodi', '=', $user->prodi)
+                ->get(),
         ]);
     }
 
@@ -35,24 +42,60 @@ class CPMKController extends Controller
         $user = auth()->user();
 
         //Validate
-        $validatedData = $request->validate([
+        $request->validate([
             "id_cpl" => "required",
-            "kode_cpmk" => "required",
             "deskripsi_cpmk" => "required",
         ]);
 
         // Save
-        $cpl = CPMK::create([
+        CPMK::createCPMK([
             'id_prodi' => $user->prodi,
             'id_cpl' => $request->input('id_cpl'),
-            'kode_cpmk' => $request->input('kode_cpmk'),
             'deskripsi_cpmk' => $request->input('deskripsi_cpmk'),
         ]);
 
         // Redirect
-        return to_route('cpmk.index')->with("msg", [
+        return redirect()->back()->with("msg", [
             "type" => "success", // success | error | warning | info | question
             "text" => "Created Success"
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Check If user exist
+        $cpmk = CPMK::findOrFail($id);
+
+        // Validate
+        $request->validate([
+            "deskripsi_cpmk" => "required",
+        ]);
+
+        // Update
+        $cpmk->deskripsi_cpmk = $request->input('deskripsi_cpmk');
+
+        // Save Update
+        $cpmk->save();
+
+        // Redirect
+        return redirect()->back()->with("msg", [
+            "type" => "success", // success | error | warning | info | question
+            "text" => "Updated Success"
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        // Check If user exist
+        $cpmk = CPMK::findOrFail($id);
+
+        // Delete
+        $cpmk->delete();
+
+        // Redirect
+        return redirect()->back()->with("msg", [
+            "type" => "success", // success | error | warning | info | question
+            "text" => "Deleted Success"
         ]);
     }
 }

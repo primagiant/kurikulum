@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::table('mata_kuliah', function (Blueprint $table) {
             $table->integer('id_kategori_mk')->unsigned()->after('semester')->nullable();
-            $table->foreign('id_kategori_mk')->references('id_kategori_mk')->on('kategori_matakuliah');
+            $table->foreign('id_kategori_mk')->references('id_kategori_mk')->on('kategori_matakuliah')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

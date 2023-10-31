@@ -5,28 +5,26 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Models\ProfilLulusan;
+use Illuminate\Support\Facades\Auth;
 
 class ProfilLulusanController extends Controller
 {
     public function index(Request $request)
     {
-        return Inertia::render('Main/KoorProdi/Feature/ProfilLulusan/ProfilLulusan', [
-            'profil_lulusan' => ProfilLulusan::query()
+        $user = Auth::user();
+        return Inertia::render('Main/KoorProdi/Feature/PL', [
+            'pl' => ProfilLulusan::query()
                 ->when($request->input('search'), function ($query, $search) {
                     $query->where('kode_pl', 'like', "%{$search}%")
                         ->OrWhere('unsur', 'like', "%{$search}%")
                         ->OrWhere('deskripsi_pl', 'like', "%{$search}%")
                         ->OrWhere('referensi', 'like', "%{$search}%");
                 })
+                ->where('id_prodi', '=', $user->prodi)
                 ->paginate(10)
                 ->withQueryString(),
             'filters' => $request->only(["search"]),
         ]);
-    }
-
-    public function create()
-    {
-        return Inertia::render('Main/KoorProdi/Feature/ProfilLulusan/FormAdd');
     }
 
     public function store(Request $request)
@@ -35,16 +33,14 @@ class ProfilLulusanController extends Controller
 
         //Validate
         $validatedData = $request->validate([
-            "kode_pl" => "required",
             "deskripsi_pl" => "required",
             "unsur" => "required",
             "referensi" => "required",
         ]);
-
+        // dd($request->input('unsur'));
         // Save
-        $profi_lulusan = ProfilLulusan::create([
+        ProfilLulusan::createProfilLulusan([
             'id_prodi' => $user->prodi,
-            'kode_pl' => $request->input('kode_pl'),
             'deskripsi_pl' => $request->input('deskripsi_pl'),
             'unsur' => $request->input('unsur'),
             'referensi' => $request->input('referensi'),
@@ -57,43 +53,30 @@ class ProfilLulusanController extends Controller
         ]);
     }
 
-    public function edit($id)
-    {
-        return Inertia::render('Main/KoorProdi/Feature/ProfilLulusan/FormEdit', [
-            'profil_lulusan' => ProfilLulusan::select('id_pl', 'kode_pl', 'deskripsi_pl', 'unsur', 'referensi')->find($id),
-        ]);
-    }
-
     public function update(Request $request, $id)
     {
-        try {
-            // Check If user exist
-            $profil = ProfilLulusan::findOrFail($id);
+        // Check If user exist
+        $profil = ProfilLulusan::findOrFail($id);
 
-            $request->validate([
-                "kode_pl" => "required|max:4|min:4",
-                "deskripsi_pl" => "required",
-                "unsur" => "required",
-                "referensi" => "required",
-            ]);
+        $request->validate([
+            "deskripsi_pl" => "required",
+            "unsur" => "required",
+            "referensi" => "required",
+        ]);
 
-            // Update
-            $profil->kode_pl = $request->input('kode_pl');
-            $profil->deskripsi_pl = $request->input('deskripsi_pl');
-            $profil->unsur = $request->input('unsur');
-            $profil->referensi = $request->input('referensi');
+        // Update
+        $profil->deskripsi_pl = $request->input('deskripsi_pl');
+        $profil->unsur = $request->input('unsur');
+        $profil->referensi = $request->input('referensi');
 
-            // Save Update
-            $profil->save();
+        // Save Update
+        $profil->save();
 
-            // Redirect
-            return to_route('profil.lulusan.index')->with("msg", [
-                "type" => "success", // success | error | warning | info | question
-                "text" => "Updated Success"
-            ]);
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
+        // Redirect
+        return to_route('profil.lulusan.index')->with("msg", [
+            "type" => "success", // success | error | warning | info | question
+            "text" => "Updated Success"
+        ]);
     }
 
     public function destroy($id)

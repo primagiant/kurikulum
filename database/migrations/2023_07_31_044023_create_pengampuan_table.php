@@ -15,13 +15,14 @@ return new class extends Migration
     {
         Schema::create('pengampuan', function (Blueprint $table) {
             $table->id("id_pengampuan")->unsigned();
-            $table->foreignId('user_id')->constrained()->onDelete("cascade");
+            $table->foreignId('user_id')->constrained()->onDelete("cascade")->onUpdate('cascade');
             $table->unsignedInteger('id_mk');
 
             $table->foreign('id_mk')
                 ->references('id_mk')
                 ->on('mata_kuliah')
-                ->onDelete('cascade');
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

@@ -2,30 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BahanKajian;
 use Inertia\Inertia;
+use App\Models\BahanKajian;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BahanKajianController extends Controller
 {
     public function index(Request $request)
     {
-        return Inertia::render('Main/KoorProdi/Feature/BahanKajian/BahanKajian', [
-            'bahan_kajian' => BahanKajian::query()
+        $user = Auth::user();
+        return Inertia::render('Main/KoorProdi/Feature/BK', [
+            'bk' => BahanKajian::query()
                 ->when($request->input('search'), function ($query, $search) {
                     $query->where('kode_bk', 'like', "%{$search}%")
                         ->OrWhere('nama_bk', 'like', "%{$search}%")
                         ->OrWhere('deskripsi_bk', 'like', "%{$search}%");
                 })
+                ->where('id_prodi', '=', $user->prodi)
+                ->orderby('kode_bk')
                 ->paginate(10)
                 ->withQueryString(),
             'filters' => $request->only(["search"]),
         ]);
-    }
-
-    public function create()
-    {
-        return Inertia::render('Main/KoorProdi/Feature/BahanKajian/FormAdd');
     }
 
     public function store(Request $request)
@@ -33,8 +32,7 @@ class BahanKajianController extends Controller
         $user = auth()->user();
 
         //Validate
-        $validatedData = $request->validate([
-            "kode_bk" => "required|min:4|max:4|alpha_num",
+        $request->validate([
             "nama_bk" => "required",
             "deskripsi_bk" => "required",
             "bobot_min" => "required|numeric",
@@ -42,9 +40,8 @@ class BahanKajianController extends Controller
         ]);
 
         // Save
-        $bahan_kajian = BahanKajian::create([
+        BahanKajian::createBk([
             'id_prodi' => $user->prodi,
-            'kode_bk' => $request->input('kode_bk'),
             'nama_bk' => $request->input('nama_bk'),
             'deskripsi_bk' => $request->input('deskripsi_bk'),
             'bobot_min' => $request->input('bobot_min'),
@@ -52,16 +49,9 @@ class BahanKajianController extends Controller
         ]);
 
         // Redirect
-        return to_route('bahan.kajian.index')->with("msg", [
+        return redirect()->back()->with("msg", [
             "type" => "success", // success | error | warning | info | question
             "text" => "Created Success"
-        ]);
-    }
-
-    public function edit($id)
-    {
-        return Inertia::render('Main/KoorProdi/Feature/BahanKajian/FormEdit', [
-            'bk' => BahanKajian::select('id_bk', 'kode_bk', 'nama_bk', 'deskripsi_bk', 'bobot_min', 'bobot_max')->find($id),
         ]);
     }
 
@@ -71,7 +61,6 @@ class BahanKajianController extends Controller
         $bk = BahanKajian::findOrFail($id);
 
         $request->validate([
-            "kode_bk" => "required|min:4|max:4|alpha_num",
             "nama_bk" => "required",
             "deskripsi_bk" => "required",
             "bobot_min" => "required|numeric",
@@ -79,7 +68,6 @@ class BahanKajianController extends Controller
         ]);
 
         // Update
-        $bk->kode_bk = $request->input('kode_bk');
         $bk->nama_bk = $request->input('nama_bk');
         $bk->deskripsi_bk = $request->input('deskripsi_bk');
         $bk->bobot_max = $request->input('bobot_max');
@@ -89,7 +77,7 @@ class BahanKajianController extends Controller
         $bk->save();
 
         // Redirect
-        return to_route('bahan.kajian.index')->with("msg", [
+        return redirect()->back()->with("msg", [
             "type" => "success", // success | error | warning | info | question
             "text" => "Updated Success"
         ]);

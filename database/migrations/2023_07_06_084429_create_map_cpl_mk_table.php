@@ -20,11 +20,13 @@ return new class extends Migration
             $table->foreign('id_cpl')
                 ->references('id_cpl')
                 ->on('cpl')
-                ->onDelete('cascade');
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->foreign('id_mk')
                 ->references('id_mk')
                 ->on('mata_kuliah')
-                ->onDelete('cascade');
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->boolean('active')->default(1);
         });
     }

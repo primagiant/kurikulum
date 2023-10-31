@@ -127,13 +127,18 @@ const sidebarItems = ref([
             },
             {
                 title: "Bahan Kajian",
-                route_name: "bahan.kajian.index",
-                link: route("bahan.kajian.index"),
+                route_name: "bk.index",
+                link: route("bk.index"),
             },
             {
                 title: "Mata Kuliah",
                 route_name: "mk.index",
                 link: route("mk.index"),
+            },
+            {
+                title: "CPMK",
+                route_name: "cpmk.index",
+                link: route("cpmk.index"),
             },
         ],
     },
@@ -161,9 +166,19 @@ const sidebarItems = ref([
                 link: route("map.cpl.mk"),
             },
             {
-                title: "3 Dimensi",
-                route_name: "",
-                link: route("dashboard"),
+                title: "CPMK - MK",
+                route_name: "map.cpmk.mk",
+                link: route("map.cpmk.mk"),
+            },
+            {
+                title: "BK - CPL - MK",
+                route_name: "map.bk.cpl.mk",
+                link: route("map.bk.cpl.mk"),
+            },
+            {
+                title: "CPL - CPMK - MK",
+                route_name: "map.cpl.cpmk.mk",
+                link: route("map.cpl.cpmk.mk"),
             },
         ],
     },
