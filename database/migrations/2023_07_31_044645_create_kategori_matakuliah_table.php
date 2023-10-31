@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('kategori_matakuliah', function (Blueprint $table) {
             $table->integer('id_kategori_mk')->unsigned()->autoIncrement();
-            $table->text('description')->nullable()->default('text');
+            $table->text('description')->nullable();
         });
     }
 

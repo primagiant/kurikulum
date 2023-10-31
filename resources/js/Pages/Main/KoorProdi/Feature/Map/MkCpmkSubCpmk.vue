@@ -116,7 +116,7 @@ table thead {
     z-index: 10;
 }
 
-4 table thead th:first-child {
+table thead th:first-child {
     position: sticky;
     left: 0;
 }

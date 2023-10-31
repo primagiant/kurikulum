@@ -18,10 +18,10 @@ return new class extends Migration
             $table->unsignedInteger('id_rps');
             $table->unsignedSmallInteger('pertemuan');
             $table->unsignedInteger('id_bk')->nullable();
-            $table->string('bentuk_pembelajaran_synchronous', 256)->nullable()->default('-');
-            $table->string('bentuk_pembelajaran_asynchronous', 256)->nullable()->default('-');
-            $table->text('waktu')->nullable()->default('-');
-            $table->text('tugas_dan_penilaian')->nullable()->default('-');
+            $table->string('bentuk_pembelajaran_synchronous', 256)->nullable();
+            $table->string('bentuk_pembelajaran_asynchronous', 256)->nullable();
+            $table->text('waktu')->nullable();
+            $table->text('tugas_dan_penilaian')->nullable();
             $table->timestamps();
 
             $table->foreign('id_rps')
