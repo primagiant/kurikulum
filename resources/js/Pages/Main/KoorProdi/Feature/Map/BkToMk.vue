@@ -1,54 +1,47 @@
 <template>
-    <Head title="User" />
+    <Head title="Maping MK - BK" />
     <layout>
         <Breadcrumb :items="breadcrumbItems" />
-        <div class="p-6">
-            <h1 class="mb-5">Maping Bahan Kajian - Mata Kuliah</h1>
-            <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 mb-4">
-                        <thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                                <th scope="col" rowspan="2" class="px-4 py-3 text-center">Kode MK</th>
-                                <th scope="col" rowspan="2" class="px-4 py-3 text-center">Nama Mata Kuliah</th>
-                                <th scope="col" colspan="100%" class="px-4 py-3 text-center">BK (Bahan Kajian)
-                                </th>
-                            </tr>
-                            <tr>
-                                <th v-for="bk_item in bk" :data-popover-target="`popover-cpl-${bk_item.id_bk}`"
-                                    data-popover-placement="bottom" scope="col" class="px-4 py-3 text-center cursor-help">
+        <div class="p-4 font-sans flex flex-col h-[calc(100vh-120px)]">
+            <div class="shadow overflow-auto border-b border-gray-200 sm:rounded">
+                <table class="w-full">
+                    <thead class="z-10 divide-y divide-gray-200">
+                        <tr class="bg-gray-100 divide-gray-600">
+                            <th scope="col"
+                                class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-200">
+                                MK / BK
+                            </th>
+                            <template v-for="bk_item in bk" :key="`th-${bk_item.id_bk}`">
+                                <th scope="col" :title="bk_item.nama_bk"
+                                    class="cursor-help px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     {{ bk_item.kode_bk }}
-                                    <div data-popover :id="`popover-cpl-${bk_item.id_bk}`" role="tooltip"
-                                        class="absolute z-10 font-light invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
-                                        <div
-                                            class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
-                                            <h3 class="font-semibold text-gray-900 dark:text-white">{{ bk_item.nama_bk }}
-                                            </h3>
+                                </th>
+                            </template>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <template v-for="mk_item, idy in mk" :key="mk_item.id_mk">
+                            <tr class="divide-x divide-gray-200">
+                                <th class="px-6 py-4 whitespace-nowrap bg-gray-100 cursor-help"
+                                    :title="mk_item.kode_mk_obe">
+                                    <div class="flex items-center">
+                                        <div class="text-left">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                {{ mk_item.nama_mk }}
+                                            </div>
                                         </div>
-                                        <div class="px-3 py-2">
-                                            <p>{{ bk_item.deskripsi_bk }}</p>
-                                        </div>
-                                        <div data-popper-arrow></div>
                                     </div>
                                 </th>
+                                <template v-for="bk_item, idx in bk" :key="bk_item.id_bk">
+                                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                                        <input @change="selectRelation(mk_item.id_mk, bk_item.id_bk)" type="checkbox"
+                                            :checked="dataActive[idy][idx]">
+                                    </td>
+                                </template>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="mk_item, idy in mk" class="border-b dark:border-gray-700">
-                                <td class="px-4 py-3 text-center">
-                                    {{ mk_item.kode_mk_obe }}
-                                </td>
-                                <td class="px-4 py-3 text-left">
-                                    {{ mk_item.nama_mk }}
-                                </td>
-                                <td v-for="bk_item, idx in bk" class="px-4 py-3 text-center">
-                                    <input @change="selectRelation(mk_item.id_mk, bk_item.id_bk)" type="checkbox"
-                                        :checked="dataActive[idy][idx]">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                        </template>
+                    </tbody>
+                </table>
             </div>
         </div>
     </layout>
@@ -62,10 +55,6 @@ import { router } from '@inertiajs/vue3'
 
 // Import Components
 import Breadcrumb from '@/Pages/Components/Breadcrumbs/Breadcrumb.vue'
-
-// BaseUrl
-import GlobalVariable from '@/variable.js'
-const baseUrl = GlobalVariable.base_url
 
 // Breadcrumb
 const breadcrumbItems = ref([
@@ -99,10 +88,37 @@ onBeforeMount(() => {
 
 // Make relation
 const selectRelation = (id_mk, id_bk) => {
-    router.post(`${baseUrl}/bk_mk`, {
+    router.post(route('maping.bk.mk'), {
         id_bk,
         id_mk
     }, { preserveScroll: true })
 }
 
 </script>
+
+<style scoped>
+table {
+    font-family: "Inter", sans-serif;
+}
+
+table thead {
+    top: 0;
+    position: sticky;
+    z-index: 10;
+}
+
+table thead th:first-child {
+    position: sticky;
+    left: 0;
+}
+
+table tbody tr,
+table thead tr {
+    position: relative;
+}
+
+table tbody th {
+    position: sticky;
+    left: 0;
+}
+</style>

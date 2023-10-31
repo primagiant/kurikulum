@@ -3,55 +3,70 @@
 namespace App\Http\Controllers;
 
 use App\Models\SubCpmk;
+use App\Models\MapCpmkMk;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
 
 class SubCPMKController extends Controller
 {
-    public function index(Request $request)
-    {
-        return Inertia::render('Main/KoorProdi/Feature/CPMK/CPMK', [
-            'cpmk' => SubCpmk::query()
-                ->when($request->input('search'), function ($query, $search) {
-                    $query->where('kode_cpmk', 'like', "%{$search}%")
-                        ->OrWhere('deskripsi_cpl', 'like', "%{$search}%");
-                })
-                ->paginate(10)
-                ->withQueryString(),
-            'filters' => $request->only(["search"]),
-        ]);
-    }
-
-    public function create()
-    {
-        return Inertia::render('Main/KoorProdi/Feature/CPMK/FormAdd', [
-            // 'cpl' => CPL::All()
-        ]);
-    }
-
     public function store(Request $request)
     {
         $user = auth()->user();
-
-        //Validate
-        $validatedData = $request->validate([
-            "id_cpl" => "required",
-            "kode_cpmk" => "required",
-            "deskripsi_cpmk" => "required",
+        $request->validate([
+            "id_map_cpmk_mk" => "required",
+            "deskripsi_sub_cpmk" => "required",
         ]);
 
         // Save
-        // $cpl = SubCpmk::create([
-        //     'id_prodi' => $user->prodi,
-        //     'id_cpl' => $request->input('id_cpl'),
-        //     'kode_cpmk' => $request->input('kode_cpmk'),
-        //     'deskripsi_cpmk' => $request->input('deskripsi_cpmk'),
-        // ]);
+        SubCpmk::createSubCpmk([
+            'id_prodi' => $user->prodi,
+            'id_map_cpmk_mk' => $request->input('id_map_cpmk_mk'),
+            'deskripsi_sub_cpmk' => $request->input('deskripsi_sub_cpmk'),
+            'active' => 1,
+        ]);
 
         // Redirect
-        // return to_route('cpmk.index')->with("msg", [
-        //     "type" => "success", // success | error | warning | info | question
-        //     "text" => "Created Success"
-        // ]);
+        return redirect()->back()->with("msg", [
+            "type" => "success", // success | error | warning | info | question
+            "text" => "Created Success"
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Check If user exist
+        $subcpmk = SubCpmk::findOrFail($id);
+
+        // Validate
+        $request->validate([
+            "deskripsi_sub_cpmk" => "required",
+        ]);
+
+        // Update
+        $subcpmk->deskripsi_sub_cpmk = $request->input('deskripsi_sub_cpmk');
+
+        // Save Update
+        $subcpmk->save();
+
+        // Redirect
+        return redirect()->back()->with("msg", [
+            "type" => "success", // success | error | warning | info | question
+            "text" => "Updated Success"
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        // Check If user exist
+        $subcpmk = SubCpmk::findOrFail($id);
+
+        // Delete
+        $subcpmk->delete();
+
+        // Redirect
+        return redirect()->back()->with("msg", [
+            "type" => "success", // success | error | warning | info | question
+            "text" => "Deleted Success"
+        ]);
     }
 }

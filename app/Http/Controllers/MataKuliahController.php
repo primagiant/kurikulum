@@ -6,13 +6,15 @@ use Inertia\Inertia;
 use App\Models\MataKuliah;
 use Illuminate\Http\Request;
 use App\Models\KategoriMatakuliah;
+use Illuminate\Support\Facades\Auth;
 
 class MatakuliahController extends Controller
 {
     public function index(Request $request)
     {
-        return Inertia::render('Main/KoorProdi/Feature/MataKuliah/MataKuliah', [
-            'mata_kuliah' => MataKuliah::query()
+        $user = Auth::user();
+        return Inertia::render('Main/KoorProdi/Feature/MK', [
+            'mk' => MataKuliah::query()
                 ->when($request->input('search'), function ($query, $search) {
                     $query->where('kode_mk_obe', 'like', "%{$search}%")
                         ->OrWhere('kode_mk_undiksha', 'like', "%{$search}%")
@@ -21,15 +23,11 @@ class MatakuliahController extends Controller
                         ->OrWhere('sks', 'like', "%{$search}%")
                         ->OrWhere('semester', 'like', "%{$search}%");
                 })
+                ->where('id_prodi', '=', $user->prodi)
+                ->orderBy("kode_mk_obe")
                 ->paginate(10)
                 ->withQueryString(),
             'filters' => $request->only(["search"]),
-        ]);
-    }
-
-    public function create()
-    {
-        return Inertia::render('Main/KoorProdi/Feature/MataKuliah/FormAdd', [
             'kategori_mk_list' => KategoriMatakuliah::all()
         ]);
     }
@@ -39,40 +37,30 @@ class MatakuliahController extends Controller
         $user = auth()->user();
 
         //Validate
-        $validatedData = $request->validate([
-            "kode_mk_obe" => "required|max:4|min:4|alpha_num",
-            "kode_mk_undiksha" => "required|max:10|min:10|alpha_num",
+        $request->validate([
             "nama_mk" => "required",
-            "deskripsi_mk" => "required",
+            "deskripsi_mk" => "required", // nanti uncommand
             "sks" => "required",
             "semester" => "required",
             "kategori_matakuliah" => "required",
         ]);
 
         // Save
-        $mk = MataKuliah::create([
+        MataKuliah::createMk([
             'id_prodi' => $user->prodi,
-            'kode_mk_obe' => $request->input('kode_mk_obe'),
-            'kode_mk_undiksha' => $request->input('kode_mk_undiksha'),
+            'kode_mk_undiksha' => "-", // nanti di perbaiki ubah sesuai dengan prodi
+            // 'kode_mk_undiksha' => $request->input('kode_mk_undiksha'), // nanti di perbaiki ubah sesuai dengan prodi
             'nama_mk' => $request->input('nama_mk'),
-            'deskripsi_mk' => $request->input('deskripsi_mk'),
+            'deskripsi_mk' => $request->input('deskripsi_mk'), // nanti uncommand
             'sks' => $request->input('sks'),
             'semester' => $request->input('semester'),
             'id_kategori_mk' => $request->input('kategori_matakuliah')
         ]);
 
         // Redirect
-        return to_route('mk.index')->with("msg", [
+        return redirect()->back()->with("msg", [
             "type" => "success", // success | error | warning | info | question
-            "text" => "Created Success"
-        ]);
-    }
-
-    public function edit($id)
-    {
-        return Inertia::render('Main/KoorProdi/Feature/MataKuliah/FormEdit', [
-            'mk' =>  MataKuliah::find($id),
-            'kategori_mk_list' => KategoriMatakuliah::all(),
+            "text" => "Create Success"
         ]);
     }
 
@@ -84,8 +72,6 @@ class MatakuliahController extends Controller
 
         // Validate
         $request->validate([
-            "kode_mk_obe" => "required|max:4|min:4|alpha_num",
-            "kode_mk_undiksha" => "required|max:10|min:10|alpha_num",
             "nama_mk" => "required",
             "deskripsi_mk" => "required",
             "sks" => "required",
@@ -94,8 +80,7 @@ class MatakuliahController extends Controller
         ]);
 
         // Update
-        $mk->kode_mk_obe = $request->input('kode_mk_obe');
-        $mk->kode_mk_undiksha = $request->input('kode_mk_undiksha');
+        $mk->kode_mk_undiksha = "-";
         $mk->nama_mk = $request->input('nama_mk');
         $mk->deskripsi_mk = $request->input('deskripsi_mk');
         $mk->sks = $request->input('sks');
@@ -106,9 +91,9 @@ class MatakuliahController extends Controller
         $mk->save();
 
         // Redirect
-        return to_route('mk.index')->with("msg", [
+        return redirect()->back()->with("msg", [
             "type" => "success", // success | error | warning | info | question
-            "text" => "Updated Success"
+            "text" => "Update Success"
         ]);
     }
 

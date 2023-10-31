@@ -2,52 +2,46 @@
     <Head title="User" />
     <layout>
         <Breadcrumb :items="breadcrumbItems" />
-        <div class="p-6">
-            <h1 class="mb-5">Maping Capaian Pembelajaran Lulusan - Profil Lulusan</h1>
-            <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
-                <div class="overflow-x-auto pb-4">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                                <th scope="col" rowspan="2" class="px-4 py-3 text-center">Kode CPL</th>
-                                <th scope="col" colspan="100%" class="px-4 py-3 text-center">PL (Profil Lulusan)</th>
-                            </tr>
-                            <tr>
-                                <th v-for="pl_item in pl" :data-popover-target="`popover-pl-${pl_item.id_pl}`" scope="col"
-                                    class="px-4 py-3 text-center cursor-help">
+        <div class="p-4 font-sans flex flex-col h-[calc(100vh-120px)]">
+            <div class="shadow overflow-auto border-b border-gray-200 sm:rounded">
+                <table class="w-full">
+                    <thead class="z-10 divide-y divide-gray-200">
+                        <tr class="bg-gray-100 divide-gray-600">
+                            <th scope="col"
+                                class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-200">
+                                CPL / PL
+                            </th>
+                            <template v-for="pl_item in pl" :key="`th-${pl_item.id_pl}`">
+                                <th scope="col" :title="pl_item.deskripsi_pl"
+                                    class="cursor-help px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     {{ pl_item.kode_pl }}
-                                    <div data-popover :id="`popover-pl-${pl_item.id_pl}`" role="tooltip"
-                                        class="absolute z-10 font-light invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
-                                        <div class="px-3 py-2">
-                                            <p>{{ pl_item.deskripsi_pl }}</p>
+                                </th>
+                            </template>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <template v-for="cpl_item, idy in cpl" :key="cpl_item.id_cpl">
+                            <tr class="divide-x divide-gray-200">
+                                <th class="px-6 py-4 whitespace-nowrap bg-gray-100 cursor-help"
+                                    :title="cpl_item.deskripsi_cpl">
+                                    <div class="flex justify-center items-center">
+                                        <div class="text-left">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                {{ cpl_item.kode_cpl }}
+                                            </div>
                                         </div>
-                                        <div data-popper-arrow></div>
                                     </div>
                                 </th>
+                                <template v-for="pl_item, idx in pl" :key="pl_item.id_pl">
+                                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                                        <input type="checkbox" :checked="dataActive[idy][idx]"
+                                            @change="selectRelation(cpl_item.id_cpl, pl_item.id_pl)">
+                                    </td>
+                                </template>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="cpl_item, idy in cpl" class="border-b dark:border-gray-700">
-                                <td :data-popover-target="`popover-cpl-${cpl_item.id_cpl}`" data-popover-placement="right"
-                                    class="px-4 py-3 text-center cursor-help">
-                                    {{ cpl_item.kode_cpl }}
-                                    <div data-popover :id="`popover-cpl-${cpl_item.id_cpl}`" role="tooltip"
-                                        class="absolute z-10 font-light invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
-                                        <div class="px-3 py-2">
-                                            <p>{{ cpl_item.deskripsi_cpl }}</p>
-                                        </div>
-                                        <div data-popper-arrow></div>
-                                    </div>
-                                </td>
-                                <td v-for="pl_item, idx in pl" class="px-4 py-3 text-center">
-                                    <input type="checkbox" :checked="dataActive[idy][idx]"
-                                        @change="selectRelation(cpl_item.id_cpl, pl_item.id_pl)">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <!--  Paging -->
+                        </template>
+                    </tbody>
+                </table>
             </div>
         </div>
     </layout>
@@ -61,10 +55,6 @@ import { router } from '@inertiajs/vue3'
 
 // Import Components
 import Breadcrumb from '@/Pages/Components/Breadcrumbs/Breadcrumb.vue'
-
-// BaseUrl
-import GlobalVariable from '@/variable.js'
-const baseUrl = GlobalVariable.base_url
 
 // Breadcrumb
 const breadcrumbItems = ref([
@@ -98,10 +88,37 @@ onBeforeMount(() => {
 
 // Make relation
 const selectRelation = (id_cpl, id_pl) => {
-    router.post(`${baseUrl}/cpl_pl`, {
+    router.post(route('maping.cpl.pl'), {
         id_cpl,
         id_pl
     }, { preserveScroll: true })
 }
 
 </script>
+
+<style scoped>
+table {
+    font-family: "Inter", sans-serif;
+}
+
+table thead {
+    top: 0;
+    position: sticky;
+    z-index: 10;
+}
+
+table thead th:first-child {
+    position: sticky;
+    left: 0;
+}
+
+table tbody tr,
+table thead tr {
+    position: relative;
+}
+
+table tbody th {
+    position: sticky;
+    left: 0;
+}
+</style>

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->integer('prodi')->unsigned()->after('email')->nullable();
-            $table->foreign('prodi')->references('id_prodi')->on('prodi');
+            $table->foreign('prodi')->references('id_prodi')->on('prodi')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
